@@ -29,7 +29,7 @@ def get_xml_info(filepath):
         f_colors    = []
         ts          = []
         
-        texts       = get_page_texts_ordered(page, 'text')
+        texts       = get_specific_tags(page, 'text')
         
         for index, text in enumerate(texts):
             p_t, p_l, p_w, p_h, t_t, t_l, t_w, t_h, f_size, f_family, f_color, t = get_page_text_element_attrib(fonts, page, text)
@@ -49,6 +49,10 @@ def get_xml_info(filepath):
                                         ts, f_sizes, f_familys, f_colors)), 
                           columns =['text_top', 'text_left', 'text_width', 'text_height',
                                       'text', 'font_size', 'font_family', 'font_color'])
+        df.sort_values(by=['text_top'],inplace=True)
+        df.reset_index(inplace=True)
+        df.rename(columns={'index':'xml_index'},inplace=True)
+        #print(df.head())
     
         dfs.append(df)
 
