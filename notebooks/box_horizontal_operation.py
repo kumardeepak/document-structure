@@ -71,9 +71,10 @@ def merge_hori_boxes(df, boxes, debug=False):
 
 
 def merge_hori_boxes_close(df, configs, debug=False):
-    superscripts       = []
-    new_df             = df.copy()
-    new_df             = new_df.reset_index(drop=True)
+    superscripts        = []
+    new_df              = df.copy()
+    new_df.sort_values(by=['xml_index'], inplace=True)
+    new_df              = new_df.reset_index()
     
     '''
        - normalize superscript case.
@@ -86,18 +87,24 @@ def merge_hori_boxes_close(df, configs, debug=False):
         if is_superscript:
             superscripts.append((idx1, idx2))
             if debug:
-                print('superscript:: idx1: %d, idx2: %d' % (idx1, idx2))
+                print('superscript:: superscript_index: %d, text: %d' % (idx1, idx2))
+                print('%s %s \n' % (new_df.iloc[idx2]['text'], new_df.iloc[idx1]['text']))
 
     if len(superscripts) > 0:
         for superscript in superscripts:
-            new_df.at[superscript[1], 'text_height'] = df.iloc[superscript[0]]['text_height'] + abs(new_df.at[superscript[0], 'text_top'] - df.iloc[superscript[1]]['text_top'])
-            new_df.at[superscript[0], 'text_top']    = df.iloc[superscript[1]]['text_top']
-            
-            new_df.at[superscript[1], 'font_size']   = df.iloc[superscript[0]]['font_size']
-            new_df.at[superscript[1], 'font_family'] = df.iloc[superscript[0]]['font_family']
-            new_df.at[superscript[1], 'font_color']  = df.iloc[superscript[0]]['font_color']
+            superscript_index, text_index = superscript
 
-        new_df      = new_df.sort_values(by=['text_top', 'text_left'])
+            new_df.at[superscript_index, 'text_height'] = new_df.iloc[text_index]['text_height'] + abs(new_df.at[text_index, 'text_top'] - new_df.iloc[superscript_index]['text_top'])
+            if new_df.iloc[superscript_index]['text_top'] < new_df.iloc[text_index]['text_top']:
+                new_df.at[text_index, 'text_top']    = new_df.iloc[superscript_index]['text_top']
+            else:
+                new_df.at[superscript_index, 'text_top']    = new_df.iloc[text_index]['text_top']
+            
+            new_df.at[superscript_index, 'font_size']   = new_df.iloc[text_index]['font_size']
+            new_df.at[superscript_index, 'font_family'] = new_df.iloc[text_index]['font_family']
+            new_df.at[superscript_index, 'font_color']  = new_df.iloc[text_index]['font_color']
+
+        new_df.sort_values(by=['text_top', 'text_left'])
         new_df      = new_df.reset_index(drop=True)
     
     connections        = []

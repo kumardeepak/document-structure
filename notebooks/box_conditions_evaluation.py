@@ -120,13 +120,12 @@ def are_hlines_too_close(df, configs, idx1, idx2, debug=False):
     return False
 
 def are_hlines_superscript(df, configs, idx1, idx2, debug=False):
-
     if (abs(df.iloc[idx1]['text_top'] - df.iloc[idx2]['text_top']) <= configs['SUPERSCRIPT_HEIGHT_DIFFERENCE']):
-        if df.iloc[idx1]['text_left'] < df.iloc[idx2]['text_left']:
+        if df.iloc[idx1]['text_left'] > df.iloc[idx2]['text_left']:
             if df.iloc[idx1]['text_height'] < df.iloc[idx2]['text_height']:
                 return True, idx1, idx2
         else:
-            if df.iloc[idx1]['text_height'] < df.iloc[idx2]['text_height']:
+            if df.iloc[idx2]['text_height'] < df.iloc[idx1]['text_height']:
                 return True, idx2, idx1
     
     return False, idx1, idx2
