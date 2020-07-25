@@ -34,6 +34,8 @@ def arrange_grouped_line_indices(line_connections, debug=False):
                 del line_item[0][0]
 
             final_arranged_lines.append([line_item[0], line_item[1]])
+    if debug:
+        print('final_arrange_grouped_line_indices,arranged_lines : %s \n---------\n' % (str(final_arranged_lines)))
             
     return final_arranged_lines
 
