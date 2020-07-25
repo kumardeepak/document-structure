@@ -39,13 +39,14 @@ def merge_hori_boxes(df, boxes, debug=False):
                 f_familys.append(df.iloc[line_index]['font_family'])
                 f_colors.append(df.iloc[line_index]['font_color'])
         else:
-            first_line_index = line_indices[0]
-            last_line_index  = line_indices[-1]
+            first_line_index    = line_indices[0]
+            last_line_index     = line_indices[-1]
             
-            t_ts.append(df.iloc[first_line_index]['text_top'])
+            new_top             = df.loc[first_line_index:last_line_index, 'text_top'].min()
+            t_ts.append(new_top)
             t_ls.append(df.iloc[first_line_index]['text_left'])
 
-            max_height = df.loc[first_line_index:last_line_index, 'text_height'].max()
+            max_height          = df.loc[first_line_index:last_line_index, 'text_height'].max()
             t_hs.append(max_height)
 
             t_ws.append(df.iloc[last_line_index]['text_left'] + df.iloc[last_line_index]['text_width'] - df.iloc[first_line_index]['text_left'])
@@ -63,18 +64,15 @@ def merge_hori_boxes(df, boxes, debug=False):
                                    f_sizes, f_familys, f_colors)),
                           columns =['text_top', 'text_left', 'text_width', 'text_height', 'text', 
                                     'font_size', 'font_family', 'font_color'])
-    
-    box_df = update_horizontal_spacings_v1(box_df)
-    box_df = update_vertical_spacings_v1(box_df)
-    
+        
     return box_df
 
 
 def merge_hori_boxes_close(df, configs, debug=False):
     superscripts        = []
     new_df              = df.copy()
-    new_df.sort_values(by=['xml_index'], inplace=True)
-    new_df              = new_df.reset_index()
+    new_df.sort_values('xml_index', axis = 0, ascending = True, inplace=True)
+    new_df              = new_df.reset_index(drop=True)
     
     '''
        - normalize superscript case.
@@ -94,12 +92,13 @@ def merge_hori_boxes_close(df, configs, debug=False):
         for superscript in superscripts:
             superscript_index, text_index = superscript
 
-            new_df.at[superscript_index, 'text_height'] = new_df.iloc[text_index]['text_height'] + abs(new_df.at[text_index, 'text_top'] - new_df.iloc[superscript_index]['text_top'])
             if new_df.iloc[superscript_index]['text_top'] < new_df.iloc[text_index]['text_top']:
-                new_df.at[text_index, 'text_top']    = new_df.iloc[superscript_index]['text_top']
+                new_df.at[text_index, 'text_height']    = new_df.iloc[text_index]['text_height'] + abs(new_df.at[text_index, 'text_top'] - new_df.iloc[superscript_index]['text_top'])
+                new_df.at[text_index, 'text_top']       = new_df.iloc[superscript_index]['text_top']
             else:
                 new_df.at[superscript_index, 'text_top']    = new_df.iloc[text_index]['text_top']
             
+            new_df.at[superscript_index, 'text_height'] = new_df.iloc[text_index]['text_height']
             new_df.at[superscript_index, 'font_size']   = new_df.iloc[text_index]['font_size']
             new_df.at[superscript_index, 'font_family'] = new_df.iloc[text_index]['font_family']
             new_df.at[superscript_index, 'font_color']  = new_df.iloc[text_index]['font_color']
@@ -124,7 +123,13 @@ def merge_hori_boxes_close(df, configs, debug=False):
     if debug:
         print("line connections (merge_hori_boxes_close) : %s \n----\n" % (str(connections)))
     
-    grouped_lines = arrange_grouped_line_indices(connections, debug=debug)
-    box_df        = merge_hori_boxes(new_df, grouped_lines, debug=debug)
+    grouped_lines   = arrange_grouped_line_indices(connections, debug=debug)
+    box_df          = merge_hori_boxes(new_df, grouped_lines, debug=debug)
+
+    box_df.sort_values(by=['text_top', 'text_left'], ascending = True, inplace=True)
+    box_df          = box_df.reset_index(drop=True)
+    box_df          = update_horizontal_spacings_v1(box_df)
+    box_df          = update_vertical_spacings_v1(box_df)
+
     print('total records: %d, after merging records %d' % (new_df.shape[0], box_df.shape[0]))
     return box_df
