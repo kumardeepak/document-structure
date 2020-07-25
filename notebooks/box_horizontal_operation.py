@@ -85,7 +85,9 @@ def merge_hori_boxes_close(df, configs, debug=False):
         is_superscript, idx1, idx2 = are_hlines_superscript(new_df, configs, index_gram[1], index_gram[0], debug=debug)
         if is_superscript:
             superscripts.append((idx1, idx2))
-            
+            if debug:
+                print('superscript:: idx1: %d, idx2: %d' % (idx1, idx2))
+
     if len(superscripts) > 0:
         for superscript in superscripts:
             new_df.at[superscript[1], 'text_height'] = df.iloc[superscript[0]]['text_height'] + abs(new_df.at[superscript[0], 'text_top'] - df.iloc[superscript[1]]['text_top'])

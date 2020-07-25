@@ -71,7 +71,7 @@ def are_vlines(df, configs, idx1, idx2, debug=False):
 def are_vlines_close_enough(df, configs, idx1, idx2, debug=False):
     space = ((df.iloc[idx1]['text_top'] + df.iloc[idx1]['text_height'])) - df.iloc[idx2]['text_top']
     if debug:
-        print('are_vlines_too_close:: idx1: %d, idx2: %d, space: %d' % (idx1, idx2, space))
+        print('are_vlines_close_enough:: idx1: %d, idx2: %d, space: %d' % (idx1, idx2, space))
     if space < configs['AVERAGE_VERTICAL_SPACE']:
         return True
     return False
@@ -86,17 +86,28 @@ def are_vlines_too_close(df, configs, idx1, idx2, debug=False):
         return True
     return False
 
-def are_vlines_get_overlap(df, configs, idx1, idx2, debug=False):
+def are_vlines_zero_overlap(df, configs, idx1, idx2, debug=False):
     first_idx, sec_idx  = get_lines_upper_lower(df, idx1, idx2)
-    
-    if (df.iloc[first_idx]['text_left'] + df.iloc[first_idx]['text_width']) < df.iloc[sec_idx]['text_left']:
-        return ('VLINES_ZERO_OVERLAP', 0.0)
-    
+    if (df.iloc[first_idx]['text_left'] > df.iloc[sec_idx]['text_left']):
+        if (df.iloc[sec_idx]['text_left'] + df.iloc[sec_idx]['text_width']) < df.iloc[first_idx]['text_left']:
+            return True, abs((df.iloc[sec_idx]['text_left'] + df.iloc[sec_idx]['text_width']) - df.iloc[first_idx]['text_left'])
+    else:
+        if (df.iloc[first_idx]['text_left'] + df.iloc[first_idx]['text_width']) < df.iloc[sec_idx]['text_left']:
+            return True, abs((df.iloc[first_idx]['text_left'] + df.iloc[first_idx]['text_width']) - df.iloc[sec_idx]['text_left'])
+    return False, 0.0
 
-def are_vlines_left_aligned(df, configs, idx1, idx2, debug=False):
-    return
-    # if abs(df.iloc[idx1]['text_left'] - df.iloc[idx2]['text_left']) < 0.3 * 
+def are_vlines_full_overlap(df, configs, idx1, idx2, debug=False):
+    first_idx, sec_idx  = get_lines_upper_lower(df, idx1, idx2)
+    if (df.iloc[first_idx]['text_left'] > df.iloc[sec_idx]['text_left']):
+        if (df.iloc[sec_idx]['text_left'] + df.iloc[sec_idx]['text_width']) < (df.iloc[first_idx]['text_left'] + df.iloc[first_idx]['text_width']):
+            return True, (abs(df.iloc[sec_idx]['text_width'] - df.iloc[first_idx]['text_width']))
+    else:
+        if (df.iloc[first_idx]['text_left'] + df.iloc[first_idx]['text_width']) > (df.iloc[sec_idx]['text_left'] + df.iloc[sec_idx]['text_width']):
+            return True, (abs(df.iloc[sec_idx]['text_width'] - df.iloc[first_idx]['text_width']))
+    return False, 0.0
 
+def are_vlines_partial_overlap(df, configs, idx1, idx2, debug=False):
+    first_idx, sec_idx  = get_lines_upper_lower(df, idx1, idx2)
 
 def are_hlines_too_close(df, configs, idx1, idx2, debug=False):
     space = abs((df.iloc[idx1]['text_left'] + df.iloc[idx1]['text_width']) - df.iloc[idx2]['text_left'])
@@ -107,13 +118,14 @@ def are_hlines_too_close(df, configs, idx1, idx2, debug=False):
     return False
 
 def are_hlines_superscript(df, configs, idx1, idx2, debug=False):
-    if (df.iloc[idx1]['text_top'] > df.iloc[idx2]['text_top']):
-        if  (df.iloc[idx1]['text_top'] - df.iloc[idx2]['text_top']) <= configs['SUPERSCRIPT_HEIGHT_DIFFERENCE']:
-            return True, idx1, idx2
 
-    if (df.iloc[idx2]['text_top'] > df.iloc[idx1]['text_top']):
-        if  (df.iloc[idx2]['text_top'] - df.iloc[idx1]['text_top']) <= configs['SUPERSCRIPT_HEIGHT_DIFFERENCE']:
-            return True, idx2, idx1
+    if (abs(df.iloc[idx1]['text_top'] - df.iloc[idx2]['text_top']) <= configs['SUPERSCRIPT_HEIGHT_DIFFERENCE']):
+        if df.iloc[idx1]['text_left'] < df.iloc[idx2]['text_left']:
+            if df.iloc[idx1]['text_height'] < df.iloc[idx2]['text_height']:
+                return True, idx1, idx2
+        else:
+            if df.iloc[idx1]['text_height'] < df.iloc[idx2]['text_height']:
+                return True, idx2, idx1
     
     return False, idx1, idx2
 
