@@ -37,7 +37,7 @@ def get_xml_info(filepath):
                 continue
 
             t_ts.append(t_t)
-            t_ls.append(t_l)
+            t_ls.append(abs(t_l))
             t_ws.append(t_w)
             t_hs.append(t_h)
             f_sizes.append(f_size)

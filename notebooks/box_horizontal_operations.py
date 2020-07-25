@@ -39,12 +39,10 @@ def merge_horizontal_blocks(in_df, configs, debug=False):
             
             top          = children_df['text_top'].min()
             left         = children_df['text_left'].min()
+            width        = children_df[['text_left', 'text_width']].sum(axis=1).max() - left
             
             children_df.sort_values('text_top', axis = 0, ascending = True, inplace=True)
             height       =  (children_df.iloc[-1]['text_top'] + children_df.iloc[-1]['text_height']) - children_df['text_top'].min()
-            
-            children_df.sort_values('text_left', axis = 0, ascending = True, inplace=True)
-            width        = (children_df.iloc[-1]['text_left'] + children_df.iloc[-1]['text_width']) - children_df['text_left'].min()
             
             block_df.at[index, 'text_top']     = top
             block_df.at[index, 'text_left']    = left
