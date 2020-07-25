@@ -6,7 +6,6 @@ from box_horizontal_evalutions import (are_hlines)
 from box_grouping import arrange_grouped_line_indices
 
 def merge_horizontal_blocks(in_df, configs, debug=False):
-    hori_blocks_dfs    = []
     df                 = in_df.copy(deep=True)
     df                 = in_df.reset_index(drop=True)
     
