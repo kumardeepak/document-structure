@@ -11,7 +11,6 @@ def extract_image_from_pdf(filepath, workspace_output_dir):
     
     create_directory(working_dir)
     images = pdf2image.convert_from_path(filepath, dpi=300, output_file=image_filename, output_folder=working_dir, fmt='jpg')
-    print('Extracted pdf images [%s] \n\n' % (working_dir))
     return working_dir
 
 # Execute pdftohtml to extract XML file of digital PDF
@@ -23,7 +22,6 @@ def extract_xml_from_digital_pdf(filepath, workspace_output_dir):
     
     cmd = ('pdftohtml -xml %s' % (os.path.join(working_dir, os.path.basename(filepath))))
     os.system(cmd)
-    print('Extracted xml of digital PDF [%s] \n\n' % (working_dir))
     return working_dir
 
 # directory/folder helper functions
