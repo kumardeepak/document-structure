@@ -33,12 +33,29 @@ def get_xml_info(filepath):
         
         for index, text in enumerate(texts):
             p_t, p_l, p_w, p_h, t_t, t_l, t_w, t_h, f_size, f_family, f_color, t = get_page_text_element_attrib(fonts, page, text)
+            right_empty_space = 4 * (len(t) - len(t.rstrip()) + 1)
+            left_empty_space  = 4 * (len(t) - len(t.lstrip()))
+
             if len(t.strip()) < 1:
                 continue
 
             t_ts.append(t_t)
+            '''
+                outlier condition. text_left has been reported to negative.
+                                        - currently we have made it +ve value.
+                                    text_width sometimes crosses page width. In order to handle it
+                                        - count empty space and multiply by factor 4. Ideally it is dependent upon font size.
+                                        - also ignoring left_empty_space
+            '''
+            
             t_ls.append(abs(t_l))
-            t_ws.append(t_w)
+
+            if (t_w + t_l) > width:
+                t_w1 = (t_w - right_empty_space)
+                t_ws.append(t_w1)
+            else:
+                t_ws.append(t_w)
+
             t_hs.append(t_h)
             f_sizes.append(f_size)
             f_familys.append(f_family)
