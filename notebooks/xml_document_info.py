@@ -9,6 +9,21 @@ from utilities import (extract_image_from_pdf, extract_xml_from_digital_pdf,
 def get_document_width_height(pages):
     return int(pages[0].attrib['width']), int(pages[0].attrib['height'])
 
+'''
+    -    Normalizes the left & width value currently
+'''
+def normalize_page_xml_df(in_df, width, height):
+    df = in_df.copy(deep=True)
+    
+    for index, row in df.iterrows():
+        if row['text_left'] < 0:
+            df.at[index, 'text_left'] = abs(in_df.iloc[index]['text_left'])
+            
+        if row['text_left'] + row['text_width'] > width:
+            df.at[index, 'text_width'] = in_df.iloc[index-1]['text_width']
+    
+    return df
+
 def get_xml_info(filepath):
     xml             = get_xmltree(filepath)
     tag             = 'page'
@@ -37,7 +52,7 @@ def get_xml_info(filepath):
                 continue
 
             t_ts.append(t_t)
-            t_ls.append(abs(t_l))
+            t_ls.append(t_l)
             t_ws.append(t_w)
             t_hs.append(t_h)
             f_sizes.append(f_size)
@@ -54,6 +69,6 @@ def get_xml_info(filepath):
         df.rename(columns={'index':'xml_index'},inplace=True)
         #print(df.head())
     
-        dfs.append(df)
+        dfs.append(normalize_page_xml_df(df, width, height))
 
     return dfs, width, height
