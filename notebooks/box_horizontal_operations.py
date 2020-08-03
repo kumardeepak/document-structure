@@ -52,9 +52,12 @@ def merge_horizontal_blocks(in_df, configs, debug=False):
             block_df.at[index, 'text']         = ' '.join(children_df['text'].values.tolist())
 
             block_df.at[index, 'xml_index']    = children_df['xml_index'].min()
-            block_df.at[index, 'font_size']    = children_df['font_size'].max()
-            block_df.at[index, 'font_family']  = df.iloc[lines[0][0]]['font_family']
-            block_df.at[index, 'font_color']   = df.iloc[lines[0][0]]['font_color']
+
+            children_df.sort_values('text_width', axis = 0, ascending = True, inplace=True)
+
+            block_df.at[index, 'font_size']    = children_df.iloc[-1]['font_size']
+            block_df.at[index, 'font_family']  = children_df.iloc[-1]['font_family']
+            block_df.at[index, 'font_color']   = children_df.iloc[-1]['font_color']
             block_df.at[index, 'children']     = children_df.to_json()
             index += 1
     
