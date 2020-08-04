@@ -2,6 +2,25 @@ import pandas as pd
 import numpy as np
 from collections import Counter
 
+def next_gen_children(df,index):
+    c_df = pd.read_json(df['children'][index])
+    c_df = c_df.sort_values('text_left');   ind = c_df.index.values.astype(int);  top_all = sorted(c_df["text_top"])
+    flag=False;  count=0
+    if abs(top_all[0]-top_all[-1])>20:
+        return flag
+    for i in range(len(ind)):
+        left1   = int(c_df['text_left'][ind[i]]); right1  = int(c_df['text_width'][ind[i]] + left1)
+        if i+1<len(ind):
+            left2   = int(c_df['text_left'][ind[i+1]])
+            if abs(left2-right1)>40:
+                count=count+1
+    if count>=len(c_df)-1:
+        flag=True
+    else:
+        flag=False
+    return flag        
+
+
 def left_right_condition(flag,index,df,skip,current_line,left1,right1,para_right,para_left,ind, block_configs):
 
     right_margin_threshold = block_configs["right_margin_threshold"];  left_margin_threshold = block_configs["left_margin_threshold"]
@@ -9,37 +28,61 @@ def left_right_condition(flag,index,df,skip,current_line,left1,right1,para_right
     header_left_threshold = block_configs["header_left_threshold"];  header_right_threshold = block_configs["header_right_threshold"]
     space_multiply_factor = block_configs["space_multiply_factor"]
     
+    
     for index2 in ind[index+1:]:
-        
+            left1=int(df['text_left'][index2-1]); right1 = int(df['text_width'][index2-1]+left1)
             h1 = int(df['text_top'][index2-1])+int(df['text_height'][index2-1]);  h2 = int(df['text_top'][index2])
             left2 = int(df['text_left'][index2]); right2 = int(df['text_width'][index2]+left2)
             right_margin = right_margin_threshold*current_line; left_margin = left_margin_threshold*current_line
             v_spacing = abs(h2-h1); space_factor = max(int(df['text_height'][index2-1]),int(df['text_height'][index2]))
-            
+        
             ### CONDITION BASED ON LENGTH RATIO OF TWO CONSECUTIVE LINES W.R.T BLOCK
             if (length_ratio(para_right,para_left,left2,right2,left1,right1)):
                 break
+                
             ### CONDITION BASED ON VERTICAL SPACING OF TWO CONSECUTIVE LINES
             if v_spacing>space_factor*space_multiply_factor:
                 break
+                
             ### CONDITION BASED ON POSITION OF LINE IN BLOCK (MOSTLY FOR HEADER TYPE CONDITION)
-            if (left1*header_left_threshold>para_left and right1<para_right*header_right_threshold) or (left2*header_left_threshold>para_left and right2<para_right*header_right_threshold):
+            if (left1*(header_left_threshold)>para_left  and right1<para_right*header_right_threshold):
                 break
-            if (left2*header_left_threshold>left1 and right2<right1*header_right_threshold):
+            if (left2*(header_left_threshold-.25)>para_left and left1 !=left2 and right2<para_right*header_right_threshold):
                 break
+            if (left2*(header_left_threshold-.25)>left1 and left1!=left2 and right2<right1*header_right_threshold):
+                break
+            
             ### CURRENT LINE BREAK WHEN NEXT LINE IS NOT IN MARGIN WITH FIRST LINE
             if (left1==left2 and right1<right2-right2*right_break_threshold) or (left1-left_break_threshold*current_line>left2 and right1<=right2-right_break_threshold*current_line):
                 break
+                
             ### IF LINES ARE IN LEFT AND RIGHT MARGIN MEANS THAY ARE CONNECTED WITH EACH OTHERS
-            elif (left1==left2 and right1==right2) or (left1==left2 and right2>=right1-right_margin):
-                skip=skip+1
-            elif (left1+left_margin>=left2 and right1==right2) or (left1+left_margin>=left2 and right2>=right1-right_margin):
-                skip=skip+1
-            elif (left1-left_margin<=left2 and right1==right2) or (left1-left_margin<=left2 and right2>=right1-right_margin):
-                skip=skip+1
+            elif  (left1==left2 and right1==right2) or (left1==left2 and right2>=right1-right_margin):
+                if v_spacing>space_factor*2.0:
+                    break
+                else:
+                    skip=skip+1
+            elif (left1+left_margin>=left2 and left2>left1 and right1==right2) or (left1+left_margin>=left2 and left2>left1 and right2>=right1-right_margin):
+                if v_spacing>space_factor*2.0:
+                    break
+                else:
+                    skip=skip+1
+            elif (left1-left_margin<=left2 and left2<left1 and right1==right2) or (left1-left_margin<=left2 and left2<left1 and right2>=right1-right_margin):
+                if v_spacing>space_factor*2.0:
+                    break
+                else:
+                    skip=skip+1
+            elif (right2<right1-40):
+                if v_spacing>space_factor*2.0:
+                    break
+                else:
+                    skip=skip+1
+                    break
             else:
-                skip=skip+1
-                break
+                if v_spacing>space_factor*2.0:
+                    break
+                else:
+                    skip=skip+1
             if index2==ind[-1]:
                 skip=skip+1; flag=True
                 break
@@ -59,6 +102,15 @@ def left_right_margin(children, block_configs):
         if skip!=0:
             skip=skip-1
             continue
+        if df['children'][index] !=None and  isinstance(df['children'][index], str):
+            if next_gen_children(df,index):
+                c_df = pd.read_json(df['children'][index])
+                children_flag = False
+                for i in range(len(c_df)):
+                    block_df, block_index = children_condition(block_df,c_df[i:i+1],block_index,children_flag)
+                continue
+            
+            
         left1 = int(df['text_left'][index]);  right1 = int(df['text_width'][index]+left1);  current_line = int(df['text_width'][index]);  skip=0
         #### CALL left_right_condition METHOD
         flag, skip = left_right_condition(flag,index,df,skip,current_line,left1,right1,para_right,para_left,ind, block_configs)
@@ -80,8 +132,6 @@ def left_right_margin(children, block_configs):
             block_df, block_index = children_condition(block_df,children_df,block_index,children_flag) 
             
     return block_df
-
-
 
 
 def children_condition(block_df,children_df,index,children_flag):
