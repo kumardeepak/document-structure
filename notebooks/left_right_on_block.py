@@ -43,13 +43,14 @@ def left_right_condition(flag,index,df,skip,current_line,left1,right1,para_right
             ### CONDITION BASED ON VERTICAL SPACING OF TWO CONSECUTIVE LINES
             if v_spacing>space_factor*space_multiply_factor:
                 break
-                
+            if left2>right1 or left1>right2:
+                    break   
             ### CONDITION BASED ON POSITION OF LINE IN BLOCK (MOSTLY FOR HEADER TYPE CONDITION)
             if (left1*(header_left_threshold)>para_left  and right1<para_right*header_right_threshold):
                 break
-            if (left2*(header_left_threshold-.25)>para_left and left1 !=left2 and right2<para_right*header_right_threshold):
+            if (left2*(header_left_threshold-.20)>para_left and left1 !=left2 and right2<para_right*header_right_threshold):
                 break
-            if (left2*(header_left_threshold-.25)>left1 and left1!=left2 and right2<right1*header_right_threshold):
+            if (left2*(header_left_threshold-.20)>left1 and left1!=left2 and right2<right1*header_right_threshold):
                 break
             
             ### CURRENT LINE BREAK WHEN NEXT LINE IS NOT IN MARGIN WITH FIRST LINE
@@ -152,7 +153,11 @@ def children_condition(block_df,children_df,index,children_flag):
     block_df.at[index, 'font_family']  = most_frequent(children_df['font_family'])
     block_df.at[index, 'font_color']   = most_frequent(children_df['font_color'])
     if children_flag==True:
-        block_df.at[index, 'children']     = children_df.to_json()
+        if all(v is None for v in children_df['children']):
+            block_df.at[index, 'children']     = None
+
+        else:
+            block_df.at[index, 'children']     = children_df.to_json()
     else:
         block_df.at[index, 'children']     = None
     index += 1
