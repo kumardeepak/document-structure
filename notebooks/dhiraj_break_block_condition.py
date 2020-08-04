@@ -5,13 +5,15 @@ from PIL import Image, ImageDraw, ImageFont
 
 class BlockBreak:
 
-    def __init__(self, page_image, page_df, page_num=2):
+    def __init__(self, page_image, page_df, page_num, config):
 
         self.page_image = np.array(page_image)
         self.page_df = page_df
         self.response = {}
         self.page_num = page_num
+        self.config = config
         self.margin_support = 3
+        self.page_width = self.page_image.shape[1]
 
     def median_spacing(self, line_spacing):
         spacing = []
@@ -63,6 +65,61 @@ class BlockBreak:
 
         return end_point
 
+    '''
+
+    def find_and_sort_contours(self,bloated_image):
+        contours = cv2.findContours(bloated_image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        contours = contours[0] if len(contours) == 2 else contours[1]
+        image_area = bloated_image.shape[0] * bloated_image.shape[1]
+        contours_list = []
+        for c in contours:
+            x, y, w, h = cv2.boundingRect(c)
+            if (w * h) < (image_area * 0.95):
+                contours_list.append([x, y, w, h])
+        contours_df = pd.DataFrame(contours_list, columns=['left', 'top', 'width', 'height'])
+        contours_df = contours_df.sort_values(by=['top'])
+        sorted_contours = self.sort_contours(contours_df, [])
+        sorted_contours = pd.DataFrame(sorted_contours).reset_index()
+
+        return sorted_contours
+
+
+
+    def bloat_text(self):
+        # converitng image to binary
+        #image = image > 100
+        #image = image.astype(np.uint8)
+        # Bloating
+        ystart = self.page_df['text_top'].min()
+        yend   = self.page_df['text_bottom'].max()
+        xstart = self.page_df['text_left'].min()
+        xend   = self.page_df['text_right'].max()
+
+        crop   = self.page_image[int(ystart): int(yend), int(xstart):int(xend)]
+        image  = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
+        dist_transform = cv2.distanceTransform(image, cv2.DIST_L2, 5)
+        ret, sure_fg = cv2.threshold(dist_transform, self.line_spacing_median * 0.5, 255, 0)
+        #cv2.imwrite( str(uuid.uuid1()) +'.png' ,sure_fg)
+        return sure_fg.astype(np.uint8)
+
+
+    def sort_contours(self, contours_df, sorted_contours=None):
+
+        if sorted_contours is None:
+            sorted_contours = []
+        check_y = contours_df.iloc[0]['top']
+
+        same_line = contours_df[abs(contours_df['top'] - check_y) < self.line_spacing_median*0.5]
+        next_lines = contours_df[abs(contours_df['top'] - check_y) >= self.line_spacing_median*0.5]
+        sort_lines = same_line.sort_values(by=['left'])
+        for index, row in sort_lines.iterrows():
+            sorted_contours.append(row)
+        if len(next_lines) > 0:
+            self.sort_contours(next_lines, sorted_contours)
+
+        return sorted_contours
+
+    '''
 
     def line_start_and_end_stats(self):
         lines = list(range(len(self.page_df)))
@@ -128,13 +185,39 @@ class BlockBreak:
         else:
             return None
 
+    '''
+    def line_parser(self,page_number):
+        lines_data = []
+
+        # page_number = 1
+        # pdf_index =   0
+        last_line   = len(self.page_df) -1
+        for index, row in self.sorted_contours.iterrows():
+            extracted_region = self.extract_region(row)
+            if len(extracted_region) > 0:
+                lines_in_blob = extracted_region['line'].unique()
+                lines_count = len(lines_in_blob)
+                first_line = lines_in_blob[0]
+                last_line = lines_in_blob[-1]
+                for line_id in lines_in_blob:
+                    line = {}
+                    line['visual_break'] = self.break_condition( line_id, last_line, page_number, lines_count)
+                    line['blob_id']      = index
+                    line['data']         = self.page_df.iloc[line_id]
+
+                    lines_data.append(line)
+
+        return lines_data
+    '''
+
     def line_parser(self, page_number):
         lines_data = []
 
         last_line = len(self.page_df) - 1
         for index, row in self.page_df.iterrows():
             line = {}
-            line['visual_break'] = self.break_condition(line_id=index, last_line=last_line, page_number=page_number,
+            line['visual_break'] = self.break_condition(line_id=index, line_width=row['text_width'],
+                                                        last_line=last_line, page_number=page_number,
                                                         lines_count=last_line + 1)
             # line['blob_id']     = index
             line['data'] = row[
@@ -155,13 +238,15 @@ class BlockBreak:
             self.response['lines_data'] = None
 
     # visual_break for judgement documents
-    def break_condition(self, line_id, last_line, page_number, lines_count):
+    def break_condition(self, line_id, line_width, last_line, page_number, lines_count):
         left_margin = self.get_left_margin()
         right_margin = self.get_right_margin()
         line_start = self.line_df['start'][line_id]
         line_ending = self.line_df['end'][line_id]
         start_delta = abs(line_start - left_margin)
         end_delta = abs(right_margin - line_ending)
+
+        # print(page_number)
 
         if line_id == last_line:
             # Adding exception for last line of page
@@ -171,23 +256,25 @@ class BlockBreak:
                 return 1
         else:
             # First pages uses centre alignment for headings and titles
-            if page_number == 1:
-                if start_delta > 3 * self.median_height:
-                    if end_delta > 2 * self.median_height:
-                        return 1
+            # if page_number == 1:
+
+            if (line_width / self.page_width) < self.config['width_threshold']:
+                # print(line_width / self.page_width)
+                if page_number == 1:
+                    return 1
                 else:
-                    if lines_count > 3:
-                        if end_delta > 2 * self.median_height:
-                            return 1
+                    if (line_width / self.page_width) < (self.config['width_threshold'] / 2):
+                        return 1
+
+            # Supreme court uses justified text alignment
+            if start_delta < 2 * self.median_height:
+                if end_delta > 2 * self.median_height:
+                    return 1
+
             else:
-                # Supreme court uses justified text alignment
-                if start_delta < 2 * self.median_height:
-                    if end_delta > 2 * self.median_height:
+                if abs(line_start - self.line_df['start'][line_id + 1]) > 2 * self.median_height:
+                    if abs(line_ending - self.line_df['end'][line_id + 1]) > 2 * self.median_height:
                         return 1
-                else:
-                    if abs(line_start - self.line_df['start'][line_id + 1]) > 2 * self.median_height:
-                        if abs(line_ending - self.line_df['end'][line_id + 1]) > 2 * self.median_height:
-                            return 1
 
         return 0
 
@@ -237,11 +324,11 @@ def sub_block(text_chunks, chunk_data):
     return pd.DataFrame(sub_block_list)
 
 
-def process_block(children, image, page_num):
+def process_block(children, image, page_num, configs):
     # Assuming PIL image as input
     in_df = pd.read_json(children)
 
-    breaks = BlockBreak(image, in_df, page_num)
+    breaks = BlockBreak(image, in_df, page_num, configs)
     breaks.line_metadata()
     block_df = pd.DataFrame(breaks.response['lines_data'])
     text_chunks, chunk_data = group_by_visual_break(block_df)
@@ -250,7 +337,7 @@ def process_block(children, image, page_num):
     return sub_block_df
 
 
-def process_page_blocks(page_df, image, configs, page_num=2, debug=False):
+def process_page_blocks(page_df, image, page_num, configs, debug=False):
     list_of_blocks = []
 
     block_index = 0
@@ -259,10 +346,9 @@ def process_page_blocks(page_df, image, configs, page_num=2, debug=False):
             list_of_blocks.append(page_df.iloc[index].to_frame().transpose())
             block_index += 1
         else:
-            list_of_blocks.append(process_block(page_df.iloc[index]['children'], image, page_num))
+            list_of_blocks.append(process_block(page_df.iloc[index]['children'], image, page_num, configs))
             block_index += 1
     return list_of_blocks
-
 
 def draw_sub_blocks(list_of_blocks, image, margin=2, color="green", save=False):
     draw = ImageDraw.Draw(image)
