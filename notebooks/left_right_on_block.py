@@ -6,7 +6,7 @@ def next_gen_children(df,index):
     c_df = pd.read_json(df['children'][index])
     c_df = c_df.sort_values('text_left');   ind = c_df.index.values.astype(int);  top_all = sorted(c_df["text_top"])
     flag=False;  count=0
-    threshold = 40
+    threshold = 50
     if ind[0]>20:
         threshold = 50
     if abs(top_all[0]-top_all[-1])>20:
