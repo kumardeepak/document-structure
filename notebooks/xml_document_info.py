@@ -24,6 +24,31 @@ def normalize_page_xml_df(in_df, width, height):
     
     return df
 
+'''
+    - Remove all range of rows between
+        - 'Digitally signed by' & 'Signature Not Verified'. This is primarily meant for SC judgment
+'''
+def remove_redundant_rows(in_df):
+    df          = in_df.copy(deep=True)
+    start_index = 0
+    end_index   = 0
+    
+    start       = df.index[df['text'] == 'Digitally signed by'].tolist()
+    if (len(start) > 0):
+        start_index = start[0]
+
+    end   = df.index[df['text'] == 'Signature Not Verified'].tolist()
+    if (len(end) > 0):
+        end_index = end[0]
+    
+    indices = []
+    if (start_index != 0 and end_index != 0) and (start_index < end_index):
+        for i in range(start_index, end_index+1):
+            indices.append(df.index[i])
+        df = df.drop(indices)
+    
+    return df
+
 def get_xml_info(filepath):
     xml             = get_xmltree(filepath)
     tag             = 'page'
@@ -64,11 +89,15 @@ def get_xml_info(filepath):
                                         ts, f_sizes, f_familys, f_colors)), 
                           columns =['text_top', 'text_left', 'text_width', 'text_height',
                                       'text', 'font_size', 'font_family', 'font_color'])
+        '''
+            remove rows that are redundant.
+        '''
+        df  = remove_redundant_rows(df)
+
         df.sort_values(by=['text_top'],inplace=True)
         df.reset_index(inplace=True)
         df.rename(columns={'index':'xml_index'},inplace=True)
-        #print(df.head())
-    
         dfs.append(normalize_page_xml_df(df, width, height))
 
     return dfs, width, height
+
