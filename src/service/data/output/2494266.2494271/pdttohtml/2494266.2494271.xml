@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="0.90.1">
+<page number="1" position="absolute" top="0" left="0" height="1188" width="918">
+	<fontspec id="0" size="26" family="POQIXX+NimbusSanL" color="#000000"/>
+	<fontspec id="1" size="17" family="UVMOHG+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="14" family="UVMOHG+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="3" size="17" family="DTZBPJ+NimbusRomNo9L-Medi" color="#000000"/>
+	<fontspec id="4" size="13" family="AGFYHO+NimbusRomNo9L-Regu" color="#000000"/>
+	<fontspec id="5" size="13" family="ERKVAH+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="6" size="13" family="DTZBPJ+NimbusRomNo9L-Medi" color="#000000"/>
+	<fontspec id="7" size="13" family="JREHNQ+NimbusRomNo9L-ReguItal" color="#000000"/>
+	<fontspec id="8" size="10" family="AGFYHO+NimbusRomNo9L-Regu" color="#000000"/>
+	<fontspec id="9" size="10" family="JREHNQ+NimbusRomNo9L-ReguItal" color="#000000"/>
+	<fontspec id="10" size="8" family="AGFYHO+NimbusRomNo9L-Regu" color="#000000"/>
+	<fontspec id="11" size="13" family="TimesNewRoman" color="#000000"/>
+<text top="108" left="135" width="644" height="25" font="0"><b>PDFX: Fully-automated PDF-to-XML Conversion of</b></text>
+<text top="138" left="332" width="251" height="25" font="0"><b>Scientific Literature</b></text>
+<text top="205" left="152" width="171" height="17" font="1">Alexandru Constantin</text>
+<text top="221" left="136" width="215" height="17" font="1">aconstantin@cs.man.ac.uk</text>
+<text top="205" left="410" width="105" height="17" font="1">Steve Pettifer</text>
+<text top="221" left="363" width="224" height="17" font="1">steve.pettifer@cs.man.ac.uk</text>
+<text top="205" left="626" width="130" height="17" font="1">Andrei Voronkov</text>
+<text top="221" left="598" width="195" height="17" font="1">voronkov@cs.man.ac.uk</text>
+<text top="248" left="363" width="189" height="14" font="2">School of Computer Science</text>
+<text top="263" left="303" width="308" height="14" font="2">The University of Manchester, United Kingdom</text>
+<text top="279" left="381" width="152" height="14" font="2">Oxford Road, M13 9PL</text>
+<text top="317" left="81" width="97" height="16" font="3">ABSTRACT</text>
+<text top="342" left="81" width="359" height="12" font="4">PDFX is a rule-based system designed to reconstruct the logical</text>
+<text top="358" left="81" width="359" height="12" font="4">structure of scholarly articles in PDF form, regardless of their for-</text>
+<text top="374" left="81" width="359" height="12" font="4">matting style. The system’s output is an XML document that de-</text>
+<text top="389" left="81" width="359" height="12" font="4">scribes the input article’s logical structure in terms of title, sections,</text>
+<text top="405" left="81" width="359" height="12" font="4">tables, references, etc. and also links it to geometrical typesetting</text>
+<text top="421" left="81" width="359" height="12" font="4">markers in the original PDF, such as paragraph and column breaks.</text>
+<text top="436" left="81" width="359" height="12" font="4">The key aspect of the presented approach is that the rule set used</text>
+<text top="452" left="81" width="359" height="12" font="4">relies on relative parameters derived from font and layout specifics</text>
+<text top="468" left="81" width="359" height="12" font="4">of each article, rather than on a template-matching paradigm. The</text>
+<text top="483" left="81" width="359" height="12" font="4">system thus obviates the need for domain- or layout-specific tuning</text>
+<text top="499" left="81" width="359" height="12" font="4">or prior training, exploiting only typographical conventions inher-</text>
+<text top="515" left="81" width="359" height="12" font="4">ent in scientific literature. Evaluated against a significantly varied</text>
+<text top="530" left="81" width="359" height="12" font="4">corpus of articles from nearly 2000 different journals, PDFX gives</text>
+<text top="546" left="81" width="359" height="12" font="4">a 77.45 F1 measure for top-level heading identification and 74.03</text>
+<text top="562" left="81" width="359" height="12" font="4">for extracting individual bibliographic items. The service is freely</text>
+<text top="578" left="81" width="101" height="12" font="4">available for use at</text>
+<text top="578" left="185" width="202" height="10" font="5"><a href="http://pdfx.cs.man.ac.uk/">http://pdfx.cs.man.ac.uk/</a></text>
+<text top="578" left="387" width="3" height="12" font="4"><a href="http://pdfx.cs.man.ac.uk/">.</a></text>
+<text top="610" left="81" width="270" height="16" font="3">Categories and Subject Descriptors</text>
+<text top="635" left="81" width="32" height="12" font="4">I.7.5 [</text>
+<text top="635" left="113" width="175" height="12" font="6">Document and Text Processing</text>
+<text top="635" left="288" width="127" height="12" font="4">]: Document Capture—</text>
+<text top="635" left="415" width="24" height="12" font="7">doc-</text>
+<text top="651" left="81" width="81" height="12" font="7">ument analysis</text>
+<text top="651" left="162" width="42" height="12" font="4">; I.2.7 [</text>
+<text top="651" left="204" width="122" height="12" font="6">Artificial Intelligence</text>
+<text top="651" left="327" width="112" height="12" font="4">]: Natural Language</text>
+<text top="666" left="81" width="72" height="12" font="4">Processing—</text>
+<text top="667" left="152" width="67" height="12" font="7">text analysis</text>
+<text top="691" left="81" width="114" height="16" font="3">General Terms</text>
+<text top="716" left="81" width="106" height="12" font="4">Algorithms, Design</text>
+<text top="741" left="81" width="77" height="16" font="3">Keywords</text>
+<text top="766" left="81" width="359" height="12" font="4">document structure analysis; PDF conversion; logical structure re-</text>
+<text top="782" left="81" width="78" height="12" font="4">covery; PDFX</text>
+<text top="815" left="81" width="13" height="16" font="3">1.</text>
+<text top="815" left="112" width="143" height="16" font="3">INTRODUCTION</text>
+<text top="837" left="94" width="345" height="12" font="4">The recent increase in volume of the global research output has</text>
+<text top="853" left="81" width="359" height="12" font="4">given rise to numerous initiatives that focus on automatic docu-</text>
+<text top="869" left="81" width="359" height="12" font="4">ment processing. The predominant goal of these approaches has</text>
+<text top="884" left="81" width="359" height="12" font="4">been to reduce the search space for potentially relevant information</text>
+<text top="900" left="81" width="359" height="12" font="4">through means such as intuitive indexing and retrieval, document</text>
+<text top="916" left="81" width="359" height="12" font="4">summarisation or discourse annotation. The added value brought</text>
+<text top="965" left="81" width="359" height="9" font="8">Permission to make digital or hard copies of part or all of this work for personal or</text>
+<text top="978" left="81" width="359" height="9" font="8">classroom use is granted without fee provided that copies are not made or distributed</text>
+<text top="991" left="81" width="359" height="9" font="8">for profit or commercial advantage, and that copies bear this notice and the full ci-</text>
+<text top="1005" left="81" width="359" height="9" font="8">tation on the first page. Copyrights for third-party components of this work must be</text>
+<text top="1018" left="81" width="359" height="9" font="8">honored. For all other uses, contact the owner/author(s). Copyright is held by the</text>
+<text top="1032" left="81" width="69" height="9" font="8">author/owner(s).</text>
+<text top="1045" left="81" width="51" height="9" font="9">DocEng’13,</text>
+<text top="1045" left="134" width="168" height="9" font="8">September 10–13, 2013, Florence, Italy.</text>
+<text top="1059" left="81" width="137" height="9" font="8">ACM 978-1-4503-1789-4/13/09.</text>
+<text top="1072" left="81" width="186" height="9" font="8"><a href="http://dx.doi.org/10.1145/2494266.2494271">http://dx.doi.org/10.1145/2494266.2494271.</a></text>
+<text top="320" left="475" width="359" height="12" font="4">by such services can be quite significant when considering the ex-</text>
+<text top="336" left="475" width="359" height="12" font="4">peditious publication rate that certain fields of study enjoy, for in-</text>
+<text top="352" left="475" width="359" height="12" font="4">stance biomedicine and the life sciences. Many such tools, how-</text>
+<text top="368" left="475" width="359" height="12" font="4">ever, work exclusively on plain-text and not camera-ready, type-</text>
+<text top="383" left="475" width="359" height="12" font="4">set publications. This makes their performance dependent on data</text>
+<text top="399" left="475" width="359" height="12" font="4">sources containing noise-free, accurate reconstructions of article</text>
+<text top="415" left="475" width="359" height="12" font="4">narratives. Automating this pre-processing step requires program-</text>
+<text top="430" left="475" width="359" height="12" font="4">matic access to the typographical layout of elements on page as</text>
+<text top="446" left="475" width="359" height="12" font="4">well as to their logical/rhetorical function within the article. For</text>
+<text top="462" left="475" width="359" height="12" font="4">this reason, analysis tools of scientific text often choose to couple</text>
+<text top="477" left="475" width="359" height="12" font="4">themselves to data stores that have human-curated semi-structured</text>
+<text top="493" left="475" width="359" height="12" font="4">representations of articles readily available, such as PMC <a href="2494266.2494271.html#4">[3], </a>Sco-</text>
+<text top="509" left="475" width="359" height="12" font="4">pus <a href="2494266.2494271.html#4">[7], </a>DBLP <a href="2494266.2494271.html#4">[12] </a>or arXiv <a href="2494266.2494271.html#4">[1]. </a>This dependency deters the tools’</text>
+<text top="524" left="475" width="359" height="12" font="4">widespread adoption because much of the information sought by</text>
+<text top="540" left="475" width="359" height="12" font="4">researchers is made available solely within PDF publications with</text>
+<text top="556" left="475" width="359" height="12" font="4">no alternative representation. Without the means to expand their</text>
+<text top="572" left="475" width="359" height="12" font="4">reach to this highly popular format, many promising natural lan-</text>
+<text top="587" left="475" width="359" height="12" font="4">guage processing and text mining solutions remain either undis-</text>
+<text top="603" left="475" width="219" height="12" font="4">covered or of little use to potential users.</text>
+<text top="619" left="489" width="345" height="12" font="4">Notable previous efforts targeting the recovery of structure from</text>
+<text top="634" left="475" width="359" height="12" font="4">the PDF are given in Table <a href="2494266.2494271.html#2">1 </a>along with their capabilities. Except</text>
+<text top="650" left="475" width="359" height="12" font="4">for the machine learning solution SectLabel <a href="2494266.2494271.html#4">[13], </a>the tools focus</text>
+<text top="666" left="475" width="359" height="12" font="4">on geometrical analysis and either do not handle or are in their pre-</text>
+<text top="681" left="475" width="359" height="12" font="4">liminary phases of logical structure recognition. In this paper we</text>
+<text top="697" left="475" width="359" height="12" font="4">present a novel system called PDFX that focuses on logical struc-</text>
+<text top="713" left="475" width="359" height="12" font="4">ture, but handles its geometrical baseline as well. It aims to identify,</text>
+<text top="728" left="475" width="359" height="12" font="4">extract and link these two structures together in order to facilitate</text>
+<text top="744" left="475" width="359" height="12" font="4">an enhanced level of interaction with an article’s contents. The</text>
+<text top="760" left="475" width="359" height="12" font="4">method employed is rule-based, iterative and unrestricted with re-</text>
+<text top="776" left="475" width="359" height="12" font="4">spect to the set of formatting templates that input articles need to</text>
+<text top="791" left="475" width="359" height="12" font="4">adhere to. The only requirement is that they be full-text natively</text>
+<text top="807" left="475" width="359" height="12" font="4">typeset PDF publications, as opposed to PDF images such as scans</text>
+<text top="823" left="475" width="359" height="12" font="4">of paper documents. The 18 logical element types that the system</text>
+<text top="838" left="475" width="359" height="12" font="4">can currently identify (listed in Table <a href="2494266.2494271.html#2">2) </a>cover the principal parts of</text>
+<text top="854" left="475" width="359" height="12" font="4">a typical research article. They are ultimately stored in an XML file</text>
+<text top="870" left="475" width="323" height="12" font="4">with a tag hierarchy that closely follows the JATS standa<a href="2494266.2494271.html#1">rd</a></text>
+<text top="867" left="798" width="4" height="8" font="10"><a href="2494266.2494271.html#1">1</a></text>
+<text top="870" left="803" width="31" height="12" font="4"><a href="2494266.2494271.html#1">. </a>The</text>
+<text top="885" left="475" width="359" height="12" font="4">semi-structured nature of the XML serves as a convenient, quick-</text>
+<text top="901" left="475" width="259" height="12" font="4">access route to any of the articles’s components.</text>
+<text top="940" left="475" width="13" height="16" font="3">2.</text>
+<text top="940" left="507" width="213" height="16" font="3">SYSTEM AND METHODS</text>
+<text top="963" left="489" width="345" height="12" font="4">PDFX carries out a two-stage process in order to address struc-</text>
+<text top="978" left="475" width="359" height="12" font="4">ture recovery. The first stage constructs a geometrical model of</text>
+<text top="994" left="475" width="359" height="12" font="4">the article’s contents to determine the spatial organisation of tex-</text>
+<text top="1010" left="475" width="359" height="12" font="4">tual and graphical units on page. The second stage draws upon the</text>
+<text top="1037" left="477" width="4" height="8" font="10">1</text>
+<text top="1040" left="482" width="352" height="12" font="4">ANSI/NISO Z39.96-2012 standard, JATS: Journal Article Tag</text>
+<text top="1053" left="475" width="35" height="12" font="4">Suite -</text>
+<text top="1054" left="514" width="169" height="10" font="5"><a href="http://jats.niso.org/">http://jats.niso.org/</a></text>
+<text top="1053" left="686" width="147" height="12" font="4">- formalised from the NLM</text>
+<text top="1067" left="475" width="198" height="12" font="4">Archiving and Interchange Tag Suite</text>
+<text top="1132" left="449" width="20" height="18" font="11">177</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="1188" width="918">
+	<fontspec id="12" size="11" family="DTZBPJ+NimbusRomNo9L-Medi" color="#000000"/>
+	<fontspec id="13" size="11" family="AGFYHO+NimbusRomNo9L-Regu" color="#000000"/>
+<text top="83" left="102" width="22" height="11" font="12">Tool</text>
+<text top="83" left="260" width="37" height="11" font="12">Output</text>
+<text top="83" left="376" width="115" height="11" font="12">Geometrical Structure</text>
+<text top="83" left="640" width="90" height="11" font="12">Logical Structure</text>
+<text top="97" left="102" width="91" height="11" font="13">pdftotext -bbox <a href="2494266.2494271.html#4">[2]</a></text>
+<text top="98" left="258" width="43" height="11" font="13">XHTML</text>
+<text top="97" left="328" width="143" height="11" font="13">pages, words (w/ coordinates)</text>
+<text top="97" left="557" width="4" height="11" font="13">-</text>
+<text top="118" left="102" width="90" height="11" font="13">pdftohtml -xml <a href="2494266.2494271.html#4">[2]</a></text>
+<text top="119" left="265" width="27" height="11" font="13">XML</text>
+<text top="112" left="328" width="209" height="11" font="13">fontspecs, pages, lines (w/ coordinates, font</text>
+<text top="125" left="328" width="74" height="11" font="13">info), emphasis</text>
+<text top="118" left="557" width="4" height="11" font="13">-</text>
+<text top="139" left="102" width="76" height="11" font="13">pdftohtml -c <a href="2494266.2494271.html#4">[2]</a></text>
+<text top="140" left="248" width="62" height="11" font="13">HTML+CSS</text>
+<text top="139" left="328" width="196" height="11" font="13">paragraphs; CSS positioning instructions</text>
+<text top="139" left="557" width="54" height="11" font="13">not explicit</text>
+<text top="161" left="102" width="92" height="11" font="13">pdf2xml (1) <a href="2494266.2494271.html#4">[9, 10]</a></text>
+<text top="161" left="265" width="27" height="11" font="13">XML</text>
+<text top="154" left="328" width="193" height="11" font="13">pages, lines, words (w/ coordinates, font</text>
+<text top="167" left="328" width="117" height="11" font="13">info, rotation, emphasis)</text>
+<text top="161" left="557" width="4" height="11" font="13">-</text>
+<text top="188" left="102" width="80" height="11" font="13">pdf2xml (2) <a href="2494266.2494271.html#4">[16]</a></text>
+<text top="189" left="265" width="27" height="11" font="13">XML</text>
+<text top="182" left="328" width="207" height="11" font="13">pages, font blocks (size, face, colour), lines</text>
+<text top="195" left="328" width="118" height="11" font="13">(w/ coordinates), images</text>
+<text top="188" left="557" width="4" height="11" font="13">-</text>
+<text top="216" left="102" width="86" height="11" font="13">pdftohtmlEX <a href="2494266.2494271.html#4">[17]</a></text>
+<text top="216" left="248" width="62" height="11" font="13">HTML+CSS</text>
+<text top="209" left="328" width="193" height="11" font="13">fontspecs, lines, words; CSS positioning</text>
+<text top="223" left="328" width="56" height="11" font="13">instructions</text>
+<text top="216" left="557" width="54" height="11" font="13">not explicit</text>
+<text top="237" left="102" width="115" height="11" font="13">pdfextract <a href="2494266.2494271.html#4">[11] </a>(work in</text>
+<text top="250" left="102" width="44" height="11" font="13">progress)</text>
+<text top="244" left="265" width="27" height="11" font="13">XML</text>
+<text top="237" left="328" width="162" height="11" font="13">pages, columns, lines, regions (w/</text>
+<text top="250" left="328" width="195" height="11" font="13">coordinates, font info, implicit font face)</text>
+<text top="244" left="557" width="170" height="11" font="13">title, header, footer, body, reference</text>
+<text top="264" left="102" width="86" height="11" font="13">LA-PDFText <a href="2494266.2494271.html#4">[14]</a></text>
+<text top="265" left="253" width="51" height="11" font="13">Text/XML</text>
+<text top="264" left="328" width="196" height="11" font="13">text blocks (w/ font, line number, height)</text>
+<text top="264" left="557" width="218" height="11" font="13">title, author, abstract, section, section heading</text>
+<text top="286" left="102" width="85" height="11" font="13">PDFExtract <a href="2494266.2494271.html#4">[6, 5]</a></text>
+<text top="286" left="265" width="27" height="11" font="13">XML</text>
+<text top="279" left="328" width="156" height="11" font="13">fontspecs, pages, paragraphs (w/</text>
+<text top="292" left="328" width="155" height="11" font="13">coordinates), lines (w/ font info)</text>
+<text top="279" left="557" width="214" height="11" font="13">title, abstract, section, section heading, body,</text>
+<text top="292" left="557" width="40" height="11" font="13">footnote</text>
+<text top="327" left="102" width="124" height="11" font="13">SectLabel /ParsCit <a href="2494266.2494271.html#4">[13, 8]</a></text>
+<text top="327" left="247" width="64" height="11" font="13">XML/HTML</text>
+<text top="320" left="328" width="184" height="11" font="13">not provided; may be used as input for</text>
+<text top="334" left="328" width="165" height="11" font="13">better logical structure recognition</text>
+<text top="307" left="557" width="244" height="11" font="13">title, address, affiliation, author, footnote, category,</text>
+<text top="320" left="557" width="251" height="11" font="13">keyword, copyright, body, (sub)section, (sub)section</text>
+<text top="334" left="557" width="242" height="11" font="13">heading, figure, table, caption, construct, equation,</text>
+<text top="347" left="557" width="180" height="11" font="13">list_item, note, reference, email, page</text>
+<text top="381" left="102" width="32" height="11" font="12">PDFX</text>
+<text top="381" left="137" width="55" height="11" font="13">(this paper)</text>
+<text top="382" left="247" width="64" height="11" font="13">XML/HTML</text>
+<text top="368" left="328" width="187" height="11" font="13">logical elements with page and column</text>
+<text top="381" left="328" width="211" height="11" font="13">attributes and block, column and page break</text>
+<text top="395" left="328" width="38" height="11" font="13">markers</text>
+<text top="361" left="557" width="209" height="11" font="13">title, author, abstract, author footnote, body,</text>
+<text top="375" left="557" width="230" height="11" font="13">(sub)section, (sub)section heading, figure, table,</text>
+<text top="388" left="557" width="238" height="11" font="13">caption, figure/table reference, citation, reference,</text>
+<text top="402" left="557" width="200" height="11" font="13">URI, email, side note, header/footer, page</text>
+<text top="430" left="240" width="435" height="12" font="4">Table 1: Tools for structure recovery from PDF documents and their capabilities</text>
+<text top="487" left="101" width="61" height="11" font="13">Front Matter</text>
+<text top="487" left="191" width="61" height="11" font="13">Body Matter</text>
+<text top="487" left="318" width="101" height="11" font="13">Back Matter / Others</text>
+<text top="501" left="101" width="19" height="11" font="13">title</text>
+<text top="501" left="191" width="45" height="11" font="13">body text</text>
+<text top="501" left="318" width="88" height="11" font="13">bibliographic item</text>
+<text top="515" left="101" width="31" height="11" font="13">author</text>
+<text top="515" left="191" width="58" height="11" font="13">(sub)section</text>
+<text top="515" left="318" width="52" height="11" font="13">(reference)</text>
+<text top="528" left="101" width="37" height="11" font="13">abstract</text>
+<text top="528" left="191" width="99" height="11" font="13">(sub)section heading</text>
+<text top="528" left="318" width="21" height="11" font="13">URI</text>
+<text top="542" left="101" width="73" height="11" font="13">author footnote</text>
+<text top="542" left="191" width="29" height="11" font="13">image</text>
+<text top="542" left="318" width="27" height="11" font="13">email</text>
+<text top="555" left="191" width="23" height="11" font="13">table</text>
+<text top="555" left="318" width="43" height="11" font="13">side note</text>
+<text top="568" left="191" width="35" height="11" font="13">caption</text>
+<text top="568" left="318" width="64" height="11" font="13">header/footer</text>
+<text top="582" left="191" width="102" height="11" font="13">figure/table reference</text>
+<text top="582" left="318" width="62" height="11" font="13">page number</text>
+<text top="595" left="191" width="111" height="11" font="13">bibliographic reference</text>
+<text top="609" left="191" width="44" height="11" font="13">(citation)</text>
+<text top="638" left="129" width="263" height="12" font="4">Table 2: Logical elements that PDFX can extract</text>
+<text top="690" left="81" width="359" height="12" font="4">first to identify different logical units of discourse based on their</text>
+<text top="706" left="81" width="126" height="12" font="4">discriminative features.</text>
+<text top="722" left="94" width="345" height="12" font="4">The geometrical model baseline is constructed using a library</text>
+<text top="737" left="81" width="359" height="12" font="4">from the Utopia Documents PDF reader <a href="2494266.2494271.html#4">[4]. </a>Three core elements</text>
+<text top="753" left="81" width="359" height="12" font="4">of the PDF are identified: pages, words and bitmap images. Each</text>
+<text top="769" left="81" width="359" height="12" font="4">element is modelled as a separate object with its specific features,</text>
+<text top="784" left="81" width="359" height="12" font="4">such as bounding box, orientation, textual content or font informa-</text>
+<text top="800" left="81" width="359" height="12" font="4">tion. Document- and page-wise statistics are then gathered to guide</text>
+<text top="816" left="81" width="359" height="12" font="4">the selection of constituent blocks for different logical elements</text>
+<text top="831" left="81" width="359" height="12" font="4">further down the pipeline. Font frequency maps suggest common</text>
+<text top="847" left="81" width="359" height="12" font="4">versus rare features (such as those of the core body text vs. those of</text>
+<text top="863" left="81" width="359" height="12" font="4">a possible title), whilst a font difference between two neighbouring</text>
+<text top="879" left="81" width="359" height="12" font="4">words marks a first level of separation between two distinct log-</text>
+<text top="894" left="81" width="359" height="12" font="4">ical units. Adjacent words of similar font characteristics are then</text>
+<text top="910" left="81" width="359" height="12" font="4">merged together to form a set of contiguous rectangular blocks with</text>
+<text top="926" left="81" width="359" height="12" font="4">which logical structure inference will commence. An important as-</text>
+<text top="941" left="81" width="359" height="12" font="4">pect is that the merging parameters used are defined relative to the</text>
+<text top="957" left="81" width="359" height="12" font="4">font size and font face of each word as well as to the spacing be-</text>
+<text top="973" left="81" width="359" height="12" font="4">tween consecutive words and lines. This approach facilitates tai-</text>
+<text top="988" left="81" width="359" height="12" font="4">loring for any logical element type and any article layout, being</text>
+<text top="1004" left="81" width="359" height="12" font="4">significantly more flexible than approximating hard-coded numeri-</text>
+<text top="1020" left="81" width="81" height="12" font="4">cal parameters.</text>
+<text top="1035" left="94" width="345" height="12" font="4">With the geometrical model and statistics in place, the second</text>
+<text top="1051" left="81" width="359" height="12" font="4">stage attempts to determine the semantic roles of the newly created</text>
+<text top="1067" left="81" width="233" height="12" font="4">blocks, possibly merging them into logical</text>
+<text top="1067" left="317" width="39" height="12" font="7">regions</text>
+<text top="1067" left="361" width="79" height="12" font="4">in the process.</text>
+<text top="491" left="475" width="359" height="12" font="4">A sequence of steps aims to identify one logical element type at</text>
+<text top="506" left="475" width="359" height="12" font="4">a time, across the whole article, by tagging regions with certain</text>
+<text top="522" left="475" width="80" height="12" font="4">characteristics.</text>
+<text top="538" left="489" width="345" height="12" font="4">The first and most important step in the sequence is to identify</text>
+<text top="554" left="475" width="359" height="12" font="4">the core body text along with the reading order of the article. Out</text>
+<text top="569" left="475" width="359" height="12" font="4">of the set of merged blocks, those containing primarily words in</text>
+<text top="585" left="475" width="280" height="12" font="4">the most frequent font of the article are tagged as</text>
+<text top="585" left="760" width="71" height="12" font="7">body regions</text>
+<text top="585" left="831" width="3" height="12" font="4">.</text>
+<text top="601" left="475" width="359" height="12" font="4">The dominant body region shape is used to determine the column</text>
+<text top="616" left="475" width="359" height="12" font="4">layout and the intended reading order. Tagging of the rest of the re-</text>
+<text top="632" left="475" width="359" height="12" font="4">gions is afterwards carried out in a prioritised manner. The priority</text>
+<text top="648" left="475" width="359" height="12" font="4">is dictated by an empirically determined level of difficulty in identi-</text>
+<text top="663" left="475" width="359" height="12" font="4">fying each logical element type. The elements considered easiest to</text>
+<text top="679" left="475" width="359" height="12" font="4">tag confidently are searched for first. The rest of the identification</text>
+<text top="695" left="475" width="359" height="12" font="4">sequence is as follows: (1) images, (2) DOI, (3) authors, (4) title,</text>
+<text top="710" left="475" width="359" height="12" font="4">(5) outsiders: headers, footers, side notes, page numbers, (6) top-</text>
+<text top="726" left="475" width="359" height="12" font="4">level headings, (7) abstract, (8) captions, (9) lower-level headings,</text>
+<text top="742" left="475" width="359" height="12" font="4">(10) author footnotes, (11) remaining regions, (12) bibliography</text>
+<text top="758" left="475" width="359" height="12" font="4">and bibliographic items, (13) other body regions, (14) tables, (15)</text>
+<text top="773" left="475" width="359" height="12" font="4">in-text references to figures, tables and bibliographic items; URIs</text>
+<text top="789" left="475" width="61" height="12" font="4">and emails.</text>
+<text top="805" left="489" width="345" height="12" font="4">A trade-off between precision and processing time was made in</text>
+<text top="820" left="475" width="359" height="12" font="4">the system design in that the above sequence does not reiterate.</text>
+<text top="836" left="475" width="359" height="12" font="4">Instead of employing multiple passes until no more new useful in-</text>
+<text top="852" left="475" width="359" height="12" font="4">formation is gained at the end of a pass, we have opted confer each</text>
+<text top="867" left="475" width="359" height="12" font="4">tag assigned to a region an associated binary confidence level. This</text>
+<text top="883" left="475" width="359" height="12" font="4">level can be either ‘confident’, to mean that the region adheres to</text>
+<text top="899" left="475" width="359" height="12" font="4">concrete rules of a specific element type or ‘possible’, to signify a</text>
+<text top="914" left="475" width="359" height="12" font="4">partial conformation with these rules. Then, as region identifica-</text>
+<text top="930" left="475" width="130" height="12" font="4">tion progresses and new</text>
+<text top="931" left="609" width="137" height="10" font="5">(tag, confidence)</text>
+<text top="930" left="750" width="84" height="12" font="4">information be-</text>
+<text top="946" left="475" width="359" height="12" font="4">comes available, two types of events may occur: (A) certain regions</text>
+<text top="961" left="475" width="359" height="12" font="4">may have their tags and/or confidence levels changed to reflect their</text>
+<text top="977" left="475" width="359" height="12" font="4">most likely function in the current context; (B) increasingly more</text>
+<text top="993" left="475" width="359" height="12" font="4">difficult element types become identifiable because of new struc-</text>
+<text top="1009" left="475" width="129" height="12" font="4">tural and semantic cues.</text>
+<text top="1024" left="489" width="345" height="12" font="4">The XML output is constructed with the most likely tags of the</text>
+<text top="1040" left="475" width="359" height="12" font="4">different regions at the end of the processing sequence. The initially</text>
+<text top="1056" left="475" width="359" height="12" font="4">identified contiguous blocks, now encapsulated in logical regions,</text>
+<text top="1132" left="449" width="20" height="18" font="11">178</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="1188" width="918">
+	<fontspec id="14" size="11" family="ERKVAH+NimbusMonL-Regu" color="#000000"/>
+<image top="562" left="475" width="355" height="187" src="/home/naresh/Tesseract/document-structurelocal/data/output/2494266.2494271/pdttohtml/2494266.2494271-3_1.png"/>
+<text top="81" left="95" width="330" height="9" font="14">&lt;region class=&#34;TextChunk&#34; page=&#34;2&#34; column=&#34;2&#34;&gt;</text>
+<text top="94" left="117" width="273" height="9" font="14">[...] encapsulated in logical regions,</text>
+<text top="108" left="117" width="230" height="9" font="14">&lt;marker type=&#34;page&#34; number=&#34;3&#34;/&gt;</text>
+<text top="121" left="117" width="244" height="9" font="14">&lt;marker type=&#34;column&#34; number=&#34;1&#34;/&gt;</text>
+<text top="135" left="117" width="158" height="9" font="14">&lt;marker type=&#34;block&#34;/&gt;</text>
+<text top="148" left="117" width="287" height="9" font="14">jointly reconstruct the rhetorical [...]</text>
+<text top="162" left="95" width="65" height="9" font="14">&lt;/region&gt;</text>
+<text top="198" left="81" width="359" height="12" font="4">Figure 1: XML example of a PDFX region spanning two columns.</text>
+<text top="232" left="81" width="359" height="12" font="4">jointly reconstruct the rhetorical structure of the article. Informa-</text>
+<text top="248" left="81" width="359" height="12" font="4">tion about the different regions and their organisation is represented</text>
+<text top="263" left="81" width="359" height="12" font="4">using an XML format very close in schema to the JATS standard.</text>
+<text top="279" left="81" width="61" height="12" font="4">The logical</text>
+<text top="279" left="145" width="38" height="12" font="7">section</text>
+<text top="279" left="187" width="252" height="12" font="4">elements are implied by the heading hierarchy,</text>
+<text top="295" left="81" width="359" height="12" font="4">being added in and populated during the XML construction. As</text>
+<text top="310" left="81" width="359" height="12" font="4">regions can span multiple blocks, columns or pages, their respec-</text>
+<text top="326" left="81" width="359" height="12" font="4">tive XML elements may contain tags that act as physical position</text>
+<text top="342" left="81" width="359" height="12" font="4">markers in the original text. An excerpt from the processing out-</text>
+<text top="357" left="81" width="359" height="12" font="4">put of this paper illustrates a region spanning two pages (Figure <a href="2494266.2494271.html#3">1).</a></text>
+<text top="373" left="81" width="359" height="12" font="4">The intruding figure itself was identified and skipped over when</text>
+<text top="389" left="81" width="197" height="12" font="4">reconstructing the text stream. The</text>
+<text top="389" left="283" width="27" height="12" font="7">class</text>
+<text top="389" left="315" width="125" height="12" font="4">attribute of the region,</text>
+<text top="405" left="81" width="160" height="12" font="4">set in accordance with <a href="2494266.2494271.html#3">DoCO</a></text>
+<text top="402" left="241" width="4" height="8" font="10"><a href="2494266.2494271.html#3">2</a></text>
+<text top="405" left="246" width="194" height="12" font="4"><a href="2494266.2494271.html#3">, </a>was added in order to facilitate in-</text>
+<text top="420" left="81" width="359" height="12" font="4">teroperability with other services. DoCO is an ontology of both</text>
+<text top="436" left="81" width="359" height="12" font="4">physical and logical components of bibliographic documents, well-</text>
+<text top="452" left="81" width="352" height="12" font="4">suited for linking PDFX output to other text processing pipelines.</text>
+<text top="489" left="81" width="13" height="16" font="3">3.</text>
+<text top="489" left="112" width="141" height="16" font="3">PERFORMANCE</text>
+<text top="511" left="94" width="345" height="12" font="4">We report the performance of PDFX over 3 datasets of articles</text>
+<text top="527" left="81" width="359" height="12" font="4">readily available both in published PDF form and as ground-truth,</text>
+<text top="543" left="81" width="237" height="12" font="4">manually constructed XML representations.</text>
+<text top="558" left="94" width="345" height="12" font="4">The first dataset was chosen for comparison purposes against the</text>
+<text top="574" left="81" width="221" height="12" font="4">state-of-the-art. It comprises 39 <a href="2494266.2494271.html#3">articles</a></text>
+<text top="572" left="302" width="4" height="8" font="10"><a href="2494266.2494271.html#3">3</a></text>
+<text top="574" left="312" width="127" height="12" font="4">from the field of Com-</text>
+<text top="590" left="81" width="359" height="12" font="4">puter Science taken from Luong et. al. <a href="2494266.2494271.html#4">[13]. </a>The authors have</text>
+<text top="606" left="81" width="359" height="12" font="4">also attempted logical recovery on this collection by means of ma-</text>
+<text top="621" left="81" width="359" height="12" font="4">chine learning techniques. Their tool, SectLabel, was employed on</text>
+<text top="637" left="81" width="359" height="12" font="4">geometrical analysis outputs of the articles (in the form of XML</text>
+<text top="653" left="81" width="359" height="12" font="4">files) provided by third-party OCR software. The second dataset</text>
+<text top="668" left="81" width="359" height="12" font="4">was compiled to ensure a hands-down evaluation on a very wide</text>
+<text top="684" left="81" width="359" height="12" font="4">range of document styles, in effect providing a lower-bound on</text>
+<text top="700" left="81" width="359" height="12" font="4">PDFX’s performance. It consisted of the latest publication of ev-</text>
+<text top="715" left="81" width="359" height="12" font="4">ery distinct journal from a 2011 snapshot of the PMC Open Access</text>
+<text top="731" left="81" width="36" height="12" font="4"><a href="2494266.2494271.html#3">Subset</a></text>
+<text top="728" left="117" width="4" height="8" font="10"><a href="2494266.2494271.html#3">4</a></text>
+<text top="731" left="122" width="318" height="12" font="4"><a href="2494266.2494271.html#3">. </a>After filtering out what was considered outside the scope</text>
+<text top="747" left="81" width="359" height="12" font="4">of the study, such as OCR documents, prefaces and supplemen-</text>
+<text top="762" left="81" width="359" height="12" font="4">tary data files, the set comprised 1943 articles in total, spanning an</text>
+<text top="778" left="81" width="359" height="12" font="4">equal number of journals. We consider this collection to be highly</text>
+<text top="794" left="81" width="359" height="12" font="4">relevant for the task of logical structure recovery and have made</text>
+<text top="810" left="81" width="151" height="12" font="4">it available to download at</text>
+<text top="810" left="238" width="202" height="10" font="5"><a href="http://pdfx.cs.man.ac.uk/serve/PMC_sample_1943.zip">http://pdfx.cs.man.ac.uk/</a></text>
+<text top="826" left="81" width="202" height="10" font="5"><a href="http://pdfx.cs.man.ac.uk/serve/PMC_sample_1943.zip">serve/PMC_sample_1943.zip</a></text>
+<text top="825" left="286" width="153" height="12" font="4">for future reference. The ar-</text>
+<text top="841" left="81" width="359" height="12" font="4">chive contains the PDFs, the gold standard XMLs and PDFX’s cor-</text>
+<text top="857" left="81" width="359" height="12" font="4">responding output (1.5GB in size). Finally, the third dataset was</text>
+<text top="872" left="81" width="359" height="12" font="4">chosen from a practical point of view, for being representative of</text>
+<text top="888" left="81" width="359" height="12" font="4">yearly published research around the world. It was taken from all of</text>
+<text top="904" left="81" width="359" height="12" font="4">Elsevier’s publications from the year 2008, kindly provided under</text>
+<text top="919" left="81" width="359" height="12" font="4">a research license by the publishers. We have filtered the collection</text>
+<text top="935" left="81" width="359" height="12" font="4">in the same manner as the PMC dataset and randomly chose 50,000</text>
+<text top="951" left="81" width="359" height="12" font="4">articles for testing. In contrast to the PMC dataset, style change was</text>
+<text top="966" left="81" width="359" height="12" font="4">not as common here (being the output of a single publisher, albeit</text>
+<text top="992" left="82" width="4" height="8" font="10">2</text>
+<text top="995" left="87" width="43" height="12" font="4">DoCO -</text>
+<text top="996" left="134" width="218" height="10" font="5"><a href="http:www.purl.org/spar/doco">http:www.purl.org/spar/doco</a></text>
+<text top="1008" left="82" width="4" height="8" font="10">3</text>
+<text top="1011" left="87" width="352" height="12" font="4">The original set had 40 articles, but we were unable to retrieve</text>
+<text top="1024" left="81" width="359" height="12" font="4">one of them in natively typeset form and hence removed from the</text>
+<text top="1038" left="81" width="59" height="12" font="4">evaluation.</text>
+<text top="1051" left="82" width="4" height="8" font="10">4</text>
+<text top="1053" left="87" width="290" height="12" font="4">The PubMed Central Open Access Article Subset -</text>
+<text top="1054" left="383" width="56" height="10" font="5"><a href="http://www.ncbi.nlm.nih.gov/pmc/tools/openftlist/">http://</a></text>
+<text top="1068" left="81" width="339" height="10" font="5"><a href="http://www.ncbi.nlm.nih.gov/pmc/tools/openftlist/">www.ncbi.nlm.nih.gov/pmc/tools/openftlist/</a></text>
+<text top="87" left="475" width="359" height="12" font="4">covering many journals), but the topic coverage was significantly</text>
+<text top="102" left="475" width="33" height="12" font="4">wider.</text>
+<text top="118" left="489" width="345" height="12" font="4">Our standard evaluation procedure was to obtain precision (P),</text>
+<text top="134" left="475" width="359" height="12" font="4">recall (R) and F1 measures for the XML conversions, using the Rat-</text>
+<text top="149" left="475" width="359" height="12" font="4">cliff/Obershelp string comparison method <a href="2494266.2494271.html#4">[15] </a>to count as a correct</text>
+<text top="165" left="475" width="359" height="12" font="4">match any extracted element found to be at least 95% similar to its</text>
+<text top="181" left="475" width="359" height="12" font="4">ground-truth counterpart. The results for the comparative evalua-</text>
+<text top="196" left="475" width="359" height="12" font="4">tion are given in Table <a href="2494266.2494271.html#3">3 </a>and also illustrated in Figure <a href="2494266.2494271.html#3">2. </a>Results</text>
+<text top="212" left="475" width="248" height="12" font="4">for the other two datasets are given in Table <a href="2494266.2494271.html#4">4.</a></text>
+<text top="243" left="475" width="359" height="12" font="4">Table 3: Performance evaluation for the Luong et. al. dataset.</text>
+<text top="259" left="475" width="359" height="12" font="4">Comparison of F1 scores obtained by SectLabel, reported in <a href="2494266.2494271.html#4">[13],</a></text>
+<text top="274" left="475" width="359" height="12" font="4">and those of PDFX. Scores of elements at which PDFX outper-</text>
+<text top="290" left="475" width="160" height="12" font="4">formed SectLabel are in bold.</text>
+<text top="335" left="537" width="44" height="11" font="13">Category</text>
+<text top="335" left="670" width="48" height="11" font="13">SectLabel</text>
+<text top="335" left="734" width="31" height="11" font="13">PDFX</text>
+<text top="349" left="537" width="31" height="11" font="13">author</text>
+<text top="349" left="691" width="27" height="11" font="13">97.94</text>
+<text top="349" left="737" width="27" height="11" font="13">87.02</text>
+<text top="362" left="537" width="24" height="11" font="13">body</text>
+<text top="362" left="691" width="27" height="11" font="13">96.97</text>
+<text top="362" left="737" width="27" height="11" font="13">88.62</text>
+<text top="376" left="537" width="27" height="11" font="13">email</text>
+<text top="376" left="691" width="27" height="11" font="13">97.64</text>
+<text top="376" left="746" width="18" height="11" font="12">100</text>
+<text top="389" left="537" width="28" height="11" font="13">figure</text>
+<text top="389" left="691" width="27" height="11" font="13">79.93</text>
+<text top="389" left="737" width="27" height="11" font="13">54.50</text>
+<text top="403" left="537" width="66" height="11" font="13">figure caption</text>
+<text top="403" left="691" width="27" height="11" font="13">76.91</text>
+<text top="403" left="737" width="27" height="11" font="12">80.05</text>
+<text top="416" left="537" width="23" height="11" font="13">page</text>
+<text top="416" left="691" width="27" height="11" font="13">97.84</text>
+<text top="416" left="737" width="27" height="11" font="13">92.30</text>
+<text top="430" left="537" width="116" height="11" font="13">reference (bibliography)</text>
+<text top="430" left="691" width="27" height="11" font="13">99.50</text>
+<text top="430" left="737" width="27" height="11" font="13">98.00</text>
+<text top="443" left="537" width="83" height="11" font="13">top-level heading</text>
+<text top="443" left="691" width="27" height="11" font="13">93.51</text>
+<text top="443" left="743" width="21" height="11" font="12">95.3</text>
+<text top="456" left="537" width="101" height="11" font="13">second-level heading</text>
+<text top="456" left="691" width="27" height="11" font="13">91.39</text>
+<text top="456" left="743" width="21" height="11" font="12">93.0</text>
+<text top="470" left="537" width="90" height="11" font="13">third-level heading</text>
+<text top="470" left="691" width="27" height="11" font="13">81.69</text>
+<text top="470" left="737" width="27" height="11" font="13">42.96</text>
+<text top="483" left="537" width="23" height="11" font="13">table</text>
+<text top="483" left="691" width="27" height="11" font="13">79.59</text>
+<text top="483" left="737" width="27" height="11" font="13">57.00</text>
+<text top="497" left="537" width="61" height="11" font="13">table caption</text>
+<text top="497" left="691" width="27" height="11" font="13">80.69</text>
+<text top="497" left="737" width="27" height="11" font="13">77.92</text>
+<text top="510" left="537" width="19" height="11" font="13">title</text>
+<text top="510" left="700" width="18" height="11" font="13">100</text>
+<text top="510" left="746" width="18" height="11" font="13">100</text>
+<text top="766" left="475" width="355" height="12" font="4">Figure 2: Bar graph view of the results in Table <a href="2494266.2494271.html#3">3 </a>- performance</text>
+<text top="781" left="475" width="355" height="12" font="4">evaluation on the Luong et. al. dataset. Comparison of SectLabel</text>
+<text top="797" left="475" width="86" height="12" font="4"><a href="2494266.2494271.html#4">[13] </a>and PDFX.</text>
+<text top="831" left="489" width="345" height="12" font="4">The comparative evaluation yielded very promising results. De-</text>
+<text top="847" left="475" width="359" height="12" font="4">spite it being conducted on a dataset for which SectLabel had been</text>
+<text top="863" left="475" width="359" height="12" font="4">trained, PDFX managed to keep up with the performance of its</text>
+<text top="879" left="475" width="359" height="12" font="4">learned model counterpart and even outperform it at identifying</text>
+<text top="894" left="475" width="359" height="12" font="4">four elements. At title identification, both systems performed flaw-</text>
+<text top="910" left="475" width="359" height="12" font="4">lessly. PDFX was behind the SectLabel system for the other ele-</text>
+<text top="926" left="475" width="359" height="12" font="4">ments, particularly so for tables, figures and third-level headings.</text>
+<text top="941" left="475" width="359" height="12" font="4">These elements mark the areas in which the visual analysis pro-</text>
+<text top="957" left="475" width="359" height="12" font="4">vided by an OCR system and prior learning of the layout specifics</text>
+<text top="973" left="475" width="139" height="12" font="4">of articles prove valuable.</text>
+<text top="988" left="489" width="345" height="12" font="4">The automatic evaluation of the PMC dataset (Table <a href="2494266.2494271.html#4">4), </a>while</text>
+<text top="1004" left="475" width="359" height="12" font="4">satisfactory at times, was generally unforgiving. This is partly due</text>
+<text top="1020" left="475" width="359" height="12" font="4">to the dataset’s substantial variety in terms of document styles but</text>
+<text top="1035" left="475" width="359" height="12" font="4">also to the ground-truth XMLs not necessarily matching the con-</text>
+<text top="1051" left="475" width="359" height="12" font="4">tent of their respective PDF versions. Either because of character</text>
+<text top="1067" left="475" width="359" height="12" font="4">encoding issues, human error or intent (such as purposely leaving</text>
+<text top="1132" left="449" width="20" height="18" font="11">179</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="1188" width="918">
+	<fontspec id="15" size="13" family="UOMENF+CMSY9" color="#000000"/>
+<text top="83" left="107" width="39" height="11" font="12">Dataset</text>
+<text top="83" left="180" width="21" height="11" font="12">Size</text>
+<text top="83" left="229" width="13" height="11" font="12">h3</text>
+<text top="83" left="267" width="25" height="11" font="12">table</text>
+<text top="83" left="317" width="13" height="11" font="12">h2</text>
+<text top="83" left="354" width="53" height="11" font="12">fig_tbl_ref</text>
+<text top="83" left="423" width="42" height="11" font="12">abstract</text>
+<text top="83" left="482" width="38" height="11" font="12">caption</text>
+<text top="83" left="537" width="35" height="11" font="12">author</text>
+<text top="83" left="588" width="39" height="11" font="12">citation</text>
+<text top="83" left="644" width="45" height="11" font="12">bib_item</text>
+<text top="83" left="713" width="13" height="11" font="12">h1</text>
+<text top="83" left="749" width="28" height="11" font="12">email</text>
+<text top="83" left="798" width="20" height="11" font="12">title</text>
+<text top="97" left="93" width="39" height="11" font="13">Elsevier</text>
+<text top="97" left="175" width="30" height="11" font="13">50000</text>
+<text top="97" left="222" width="27" height="11" font="13">83.35</text>
+<text top="97" left="266" width="27" height="11" font="13">28.78</text>
+<text top="97" left="310" width="27" height="11" font="13">82.03</text>
+<text top="97" left="370" width="21" height="11" font="13">89.1</text>
+<text top="97" left="431" width="27" height="11" font="13">62.01</text>
+<text top="97" left="488" width="27" height="11" font="13">82.86</text>
+<text top="97" left="541" width="27" height="11" font="13">94.63</text>
+<text top="97" left="594" width="27" height="11" font="13">75.46</text>
+<text top="97" left="653" width="27" height="11" font="13">86.08</text>
+<text top="97" left="709" width="21" height="11" font="13">90.5</text>
+<text top="97" left="750" width="27" height="11" font="13">97.61</text>
+<text top="97" left="797" width="21" height="11" font="13">96.7</text>
+<text top="111" left="93" width="65" height="11" font="13">PMC_sample</text>
+<text top="111" left="181" width="24" height="11" font="13">1943</text>
+<text top="111" left="225" width="21" height="11" font="13">6.05</text>
+<text top="111" left="266" width="27" height="11" font="13">13.27</text>
+<text top="111" left="310" width="27" height="11" font="13">27.19</text>
+<text top="111" left="367" width="27" height="11" font="13">27.52</text>
+<text top="111" left="431" width="27" height="11" font="13">32.41</text>
+<text top="111" left="488" width="27" height="11" font="13">54.53</text>
+<text top="111" left="541" width="27" height="11" font="13">61.65</text>
+<text top="111" left="594" width="27" height="11" font="13">63.10</text>
+<text top="111" left="653" width="27" height="11" font="13">74.03</text>
+<text top="111" left="706" width="27" height="11" font="13">77.45</text>
+<text top="111" left="750" width="27" height="11" font="13">79.67</text>
+<text top="111" left="794" width="27" height="11" font="13">85.42</text>
+<text top="141" left="85" width="744" height="12" font="4">Table 4: Performance results for the PMC and Elsevier datasets for a 0.95 similarity threshold. Precision and recall were computed for</text>
+<text top="157" left="85" width="302" height="12" font="4">each individual article and averaged across each dataset.</text>
+<text top="202" left="81" width="359" height="12" font="4">out the Author Contribution section from the camera-ready PDF),</text>
+<text top="218" left="81" width="359" height="12" font="4">the two variants differed at times. We ran the evaluation again at a</text>
+<text top="233" left="81" width="359" height="12" font="4">0.8 similarity threshold in addition to the 0.95 one in order to gain</text>
+<text top="249" left="81" width="359" height="12" font="4">insight into the elements PDFX might still have identified correctly.</text>
+<text top="265" left="81" width="359" height="12" font="4">We saw an average performance increase of 4 F1 points, with strong</text>
+<text top="280" left="81" width="359" height="12" font="4">emphasis on elements with more textual content, abstracts and ta-</text>
+<text top="296" left="81" width="359" height="12" font="4">bles, hence more chances for discrepancies. These two elements</text>
+<text top="312" left="81" width="246" height="12" font="4">saw a 9 and 13 F1 point increase respectively.</text>
+<text top="327" left="94" width="345" height="12" font="4">The highest results for the automated evaluation were obtained</text>
+<text top="343" left="81" width="359" height="12" font="4">for the Elsevier dataset. This comes to confirm that the typesetting</text>
+<text top="359" left="81" width="359" height="12" font="4">used across the collection is likely less varied on average, but also</text>
+<text top="374" left="81" width="359" height="12" font="4">suggest that the curation level of Elsevier publications is stricter</text>
+<text top="390" left="81" width="187" height="12" font="4">and their content, stylistically rich.</text>
+<text top="441" left="81" width="13" height="16" font="3">4.</text>
+<text top="441" left="112" width="310" height="16" font="3">APPLICATIONS AND AVAILABILITY</text>
+<text top="464" left="94" width="345" height="12" font="4">The prime beneficiary of structure analysis of articles is likely to</text>
+<text top="480" left="81" width="359" height="12" font="4">be the field of Text Mining, where knowledge relevant to a specific</text>
+<text top="495" left="81" width="359" height="12" font="4">domain or task is typically searched for in vast document collec-</text>
+<text top="511" left="81" width="359" height="12" font="4">tions. Still, there are also notable use cases for a structure recovery</text>
+<text top="527" left="81" width="359" height="12" font="4">system, when functioning as a personal tool. The following are</text>
+<text top="542" left="81" width="262" height="12" font="4">real-world applications reported by PDFX users:</text>
+<text top="567" left="101" width="7" height="13" font="15">•</text>
+<text top="568" left="114" width="115" height="12" font="7">Accessibility support</text>
+<text top="568" left="235" width="204" height="12" font="4">- relieving the content of formatting</text>
+<text top="583" left="114" width="325" height="12" font="4">additions such as headers or footers to help screen readers</text>
+<text top="599" left="114" width="159" height="12" font="4">maintain fluency of discourse</text>
+<text top="614" left="101" width="7" height="13" font="15">•</text>
+<text top="615" left="114" width="139" height="12" font="7">Reading on a small screen</text>
+<text top="615" left="256" width="183" height="12" font="4">- easier consumption of content on</text>
+<text top="630" left="114" width="325" height="12" font="4">mobile devices, facilitated through reading flow reconstruc-</text>
+<text top="646" left="114" width="21" height="12" font="4">tion</text>
+<text top="661" left="101" width="7" height="13" font="15">•</text>
+<text top="662" left="114" width="106" height="12" font="7">Document indexing</text>
+<text top="662" left="224" width="215" height="12" font="4">- improved through extraction of front-</text>
+<text top="677" left="114" width="86" height="12" font="4">matter metadata</text>
+<text top="692" left="101" width="7" height="13" font="15">•</text>
+<text top="693" left="114" width="146" height="12" font="7">Literature recommendation</text>
+<text top="693" left="263" width="176" height="12" font="4">- improved through identification</text>
+<text top="709" left="114" width="145" height="12" font="4">of bibliographic references</text>
+<text top="723" left="101" width="7" height="13" font="15">•</text>
+<text top="725" left="114" width="142" height="12" font="7">Ontology term recognition</text>
+<text top="724" left="260" width="180" height="12" font="4">- applied to manuscripts available</text>
+<text top="740" left="114" width="95" height="12" font="4">only in PDF form</text>
+<text top="755" left="101" width="7" height="13" font="15">•</text>
+<text top="756" left="114" width="191" height="12" font="7">Support for tabular data extraction</text>
+<text top="756" left="309" width="131" height="12" font="4">- for populating special-</text>
+<text top="772" left="114" width="140" height="12" font="4">ised biomedical databases</text>
+<text top="805" left="94" width="110" height="12" font="4">PDFX is available at</text>
+<text top="805" left="208" width="202" height="10" font="5"><a href="http://pdfx.cs.man.ac.uk/">http://pdfx.cs.man.ac.uk/</a></text>
+<text top="805" left="412" width="27" height="12" font="4">as an</text>
+<text top="820" left="81" width="359" height="12" font="4">interactive web page and free-to-use programmatic web service.</text>
+<text top="836" left="81" width="359" height="12" font="4">Submitted PDF articles are processed on-the-fly. The user is given</text>
+<text top="852" left="81" width="234" height="12" font="4">three options of interacting with the output:</text>
+<text top="876" left="101" width="7" height="13" font="15">•</text>
+<text top="877" left="114" width="237" height="12" font="4">Access/retrieve the generated XML version.</text>
+<text top="892" left="101" width="7" height="13" font="15">•</text>
+<text top="893" left="114" width="325" height="12" font="4">View a reconstruction of the article in HTML form, using</text>
+<text top="908" left="114" width="325" height="12" font="4">the generated XML. The core content of the original article</text>
+<text top="924" left="114" width="325" height="12" font="4">is presented as a single-column stream of text, free from ele-</text>
+<text top="940" left="114" width="325" height="12" font="4">ments such as headers, footers or side notes, with figures and</text>
+<text top="955" left="114" width="132" height="12" font="4">tables placed to the side.</text>
+<text top="970" left="101" width="7" height="13" font="15">•</text>
+<text top="971" left="114" width="325" height="12" font="4">Download an archive containing the entire output, including</text>
+<text top="987" left="114" width="199" height="12" font="4">rendered images, for offline viewing.</text>
+<text top="1020" left="94" width="246" height="12" font="4">An example of this functionality is available at</text>
+<text top="1020" left="343" width="97" height="10" font="5"><a href="http://pdfx.cs.man.ac.uk/example">http://pdfx.</a></text>
+<text top="1036" left="81" width="161" height="10" font="5"><a href="http://pdfx.cs.man.ac.uk/example">cs.man.ac.uk/example</a></text>
+<text top="1035" left="242" width="197" height="12" font="4"><a href="http://pdfx.cs.man.ac.uk/example">. </a>Input and output files for each pro-</text>
+<text top="1051" left="81" width="359" height="12" font="4">cessing job are stored for 24 hours since the time of submission,</text>
+<text top="1067" left="81" width="181" height="12" font="4">under randomly-generated URLs.</text>
+<text top="202" left="489" width="115" height="12" font="6">Acknowledgements.</text>
+<text top="202" left="608" width="226" height="12" font="4">We are indebted to the Utopia Documents</text>
+<text top="218" left="475" width="359" height="12" font="4">team, Stephen Wan, Alex Garnett, the ScienceWISE team, the NLP</text>
+<text top="233" left="475" width="359" height="12" font="4">group at the National University of Singapore, the 2012 Biohacka-</text>
+<text top="249" left="475" width="359" height="12" font="4">thon attendees as well as all the regular users of PDFX for all their</text>
+<text top="265" left="475" width="359" height="12" font="4">support, valuable feedback and feature suggestions. We also thank</text>
+<text top="280" left="475" width="313" height="12" font="4">Elsevier for providing the article collection for evaluation.</text>
+<text top="313" left="475" width="13" height="16" font="3">5.</text>
+<text top="313" left="507" width="121" height="16" font="3">REFERENCES</text>
+<text top="335" left="482" width="171" height="12" font="4">[1] The arxiv e-print database -</text>
+<text top="335" left="656" width="129" height="10" font="5"><a href="http://arxiv.org">http://arxiv.org</a></text>
+<text top="335" left="785" width="3" height="12" font="4"><a href="http://arxiv.org">.</a></text>
+<text top="352" left="482" width="148" height="12" font="4">[2] The poppler pdf library</text>
+<text top="368" left="504" width="250" height="10" font="5"><a href="http://poppler.freedesktop.org/">http://poppler.freedesktop.org/</a></text>
+<text top="368" left="755" width="3" height="12" font="4"><a href="http://poppler.freedesktop.org/">.</a></text>
+<text top="385" left="482" width="180" height="12" font="4">[3] The pubmed central archive -</text>
+<text top="401" left="504" width="258" height="10" font="5"><a href="http://www.ncbi.nlm.nih.gov/pmc/">http://www.ncbi.nlm.nih.gov/pmc/</a></text>
+<text top="401" left="763" width="3" height="12" font="4"><a href="http://www.ncbi.nlm.nih.gov/pmc/">.</a></text>
+<text top="418" left="482" width="319" height="12" font="4">[4] Teresa K Attwood, Douglas B Kell, Philip McDermott,</text>
+<text top="433" left="504" width="297" height="12" font="4">James Marsh, Steve Pettifer, and David Thorne. Utopia</text>
+<text top="449" left="504" width="313" height="12" font="4">documents: linking scholarly literature with research data.</text>
+<text top="465" left="504" width="80" height="12" font="7">Bioinformatics</text>
+<text top="465" left="584" width="138" height="12" font="4">, 26(18):i568–i574, 2010.</text>
+<text top="482" left="482" width="337" height="12" font="4">[5] Øyvind Raddum Berg. High precision text extraction from</text>
+<text top="498" left="504" width="83" height="12" font="4">pdf documents.</text>
+<text top="498" left="591" width="157" height="12" font="7">MSc - The University of Oslo</text>
+<text top="498" left="748" width="37" height="12" font="4">, 2011.</text>
+<text top="515" left="482" width="342" height="12" font="4">[6] Øyvind Raddum Berg, Stephan Oepen, and Jonathon Read.</text>
+<text top="531" left="504" width="289" height="12" font="4">Towards high-quality text stream extraction from pdf:</text>
+<text top="546" left="504" width="306" height="12" font="4">technical background to the acl 2012 contributed task. In</text>
+<text top="562" left="504" width="276" height="12" font="7">Proceedings of the ACL-2012 Special Workshop on</text>
+<text top="578" left="504" width="207" height="12" font="7">Rediscovering 50 Years of Discoveries</text>
+<text top="578" left="711" width="84" height="12" font="4">, pages 98–103.</text>
+<text top="593" left="504" width="239" height="12" font="4">Assoc. for Computational Linguistics, 2012.</text>
+<text top="610" left="482" width="263" height="12" font="4">[7] Judy F Burnham. Scopus database: a review.</text>
+<text top="611" left="748" width="61" height="12" font="7">Biomedical</text>
+<text top="626" left="504" width="85" height="12" font="7">digital libraries</text>
+<text top="626" left="589" width="77" height="12" font="4">, 3(1):1, 2006.</text>
+<text top="643" left="482" width="334" height="12" font="4">[8] Isaac G Councill, C Lee Giles, and Min-Yen Kan. Parscit:</text>
+<text top="659" left="504" width="299" height="12" font="4">An open-source crf reference string parsing package. In</text>
+<text top="675" left="504" width="117" height="12" font="7">Proceedings of LREC</text>
+<text top="675" left="621" width="168" height="12" font="4">, volume 2008, pages 661–667.</text>
+<text top="690" left="504" width="318" height="12" font="4">European Language Resources Association (ELRA), 2008.</text>
+<text top="708" left="482" width="222" height="12" font="4">[9] Hervé Déjean. The pdf2xml project -</text>
+<text top="724" left="504" width="323" height="10" font="5"><a href="http://sourceforge.net/projects/pdf2xml/">http://sourceforge.net/projects/pdf2xml/</a></text>
+<text top="723" left="827" width="3" height="12" font="4"><a href="http://sourceforge.net/projects/pdf2xml/">.</a></text>
+<text top="740" left="475" width="303" height="12" font="4">[10] Hervé Déjean and Jean-Luc Meunier. A system for</text>
+<text top="756" left="504" width="303" height="12" font="4">converting pdf documents into structured xml format. In</text>
+<text top="772" left="504" width="171" height="12" font="7">Document Analysis Systems VII</text>
+<text top="772" left="675" width="144" height="12" font="4">, pages 129–140. Springer,</text>
+<text top="788" left="504" width="30" height="12" font="4">2006.</text>
+<text top="805" left="475" width="243" height="12" font="4">[11] CrossRef Labs. The pdfextract project -</text>
+<text top="821" left="504" width="307" height="10" font="5"><a href="https://github.com/CrossRef/pdfextract">https://github.com/CrossRef/pdfextract</a></text>
+<text top="820" left="811" width="3" height="12" font="4"><a href="https://github.com/CrossRef/pdfextract">.</a></text>
+<text top="838" left="475" width="255" height="12" font="4">[12] Michael Ley. Dblp: some lessons learned.</text>
+<text top="838" left="733" width="100" height="12" font="7">Proceedings of the</text>
+<text top="853" left="504" width="100" height="12" font="7">VLDB Endowment</text>
+<text top="853" left="605" width="130" height="12" font="4">, 2(2):1493–1500, 2009.</text>
+<text top="871" left="475" width="356" height="12" font="4">[13] Minh-Thang Luong, Thuy Dung Nguyen, and Min-Yen Kan.</text>
+<text top="886" left="504" width="302" height="12" font="4">Logical structure recovery in scholarly articles with rich</text>
+<text top="902" left="504" width="102" height="12" font="4">document features.</text>
+<text top="902" left="610" width="158" height="12" font="7">J. of Digital Library Systems.</text>
+<text top="918" left="504" width="69" height="12" font="7">Forthcoming</text>
+<text top="918" left="573" width="37" height="12" font="4">, 2011.</text>
+<text top="935" left="475" width="340" height="12" font="4">[14] C. Ramakrishnan, A. Patnia, E. Hovy, et al. Layout-aware</text>
+<text top="950" left="504" width="286" height="12" font="4">text extraction from full-text pdf of scientific articles.</text>
+<text top="951" left="794" width="37" height="12" font="7">Source</text>
+<text top="966" left="504" width="163" height="12" font="7">code for biology and medicine</text>
+<text top="966" left="668" width="97" height="12" font="4">, 7(1):1–10, 2012.</text>
+<text top="983" left="475" width="356" height="12" font="4">[15] John W. Ratcliff and David Metzener. Pattern matching: The</text>
+<text top="999" left="504" width="91" height="12" font="4">gestalt approach.</text>
+<text top="999" left="599" width="104" height="12" font="7">Dr. Dobb’s Journal</text>
+<text top="999" left="703" width="86" height="12" font="4">, page 46, 1988.</text>
+<text top="1016" left="475" width="273" height="12" font="4">[16] Matthew Talbert. Mobipocket.com pdf2xml -</text>
+<text top="1033" left="504" width="234" height="10" font="5"><a href="https://launchpad.net/pdf2xml">https://launchpad.net/pdf2xml</a></text>
+<text top="1032" left="738" width="3" height="12" font="4"><a href="https://launchpad.net/pdf2xml">.</a></text>
+<text top="1049" left="475" width="220" height="12" font="4">[17] Lu Wang. The pdf2htmlex project -</text>
+<text top="1065" left="504" width="315" height="10" font="5"><a href="http://coolwanglu.github.io/pdf2htmlEX/">http://coolwanglu.github.io/pdf2htmlEX/</a></text>
+<text top="1065" left="819" width="3" height="12" font="4"><a href="http://coolwanglu.github.io/pdf2htmlEX/">.</a></text>
+<text top="1132" left="449" width="20" height="18" font="11">180</text>
+</page>
+<outline>
+<item page="1">Introduction</item>
+<item page="1">System and Methods</item>
+<item page="3">Performance</item>
+<item page="4">Applications and Availability</item>
+<item page="4">References</item>
+</outline>
+</pdf2xml>
