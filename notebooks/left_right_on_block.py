@@ -7,8 +7,8 @@ def next_gen_children(df,index):
     c_df = c_df.sort_values('text_left');   ind = c_df.index.values.astype(int);  top_all = sorted(c_df["text_top"])
     flag=False;  count=0
     threshold = 50
-    if ind[0]>20:
-        threshold = 50
+    #if ind[0]>20:
+       # threshold = 50
     if abs(top_all[0]-top_all[-1])>20:
         return flag
     for i in range(len(ind)):
@@ -139,33 +139,59 @@ def left_right_margin(children, block_configs):
 
 
 def children_condition(block_df,children_df,index,children_flag):
-    top          = children_df['text_top'].min()
-    left         = children_df['text_left'].min()
-    width        = children_df[['text_left', 'text_width']].sum(axis=1).max() - left
+    try:
+        
+        top          = children_df['text_top'].min()
+        left         = children_df['text_left'].min()
+        width        = children_df[['text_left', 'text_width']].sum(axis=1).max() - left
 
-    children_df.sort_values('text_top', axis = 0, ascending = True, inplace=True)
-    height       = (children_df.iloc[-1]['text_top'] + children_df.iloc[-1]['text_height']) - children_df['text_top'].min()
+        children_df.sort_values('text_top', axis = 0, ascending = True, inplace=True)
+        height       = (children_df.iloc[-1]['text_top'] + children_df.iloc[-1]['text_height']) - children_df['text_top'].min()
 
-    block_df.at[index, 'text_top']     = top
-    block_df.at[index, 'text_left']    = left
-    block_df.at[index, 'text_height']  = height
-    block_df.at[index, 'text_width']   = width
-    block_df.at[index, 'text']         = ' '.join(children_df['text'].values.tolist())
-    block_df.at[index, 'xml_index']    = children_df['xml_index'].min()
-    block_df.at[index, 'font_size']    = children_df['font_size'].max()
-    block_df.at[index, 'font_family']  = most_frequent(children_df['font_family'])
-    block_df.at[index, 'font_color']   = most_frequent(children_df['font_color'])
-    if children_flag==True:
-        if all(v is None for v in children_df['children']):
-            block_df.at[index, 'children']     = None
-
+        block_df.at[index, 'text_top']     = top
+        block_df.at[index, 'text_left']    = left
+        block_df.at[index, 'text_height']  = height
+        block_df.at[index, 'text_width']   = width
+        block_df.at[index, 'text']         = ' '.join(children_df['text'].values.tolist())
+        block_df.at[index, 'xml_index']    = children_df['xml_index'].min()
+        block_df.at[index, 'font_size']    = children_df['font_size'].max()
+        block_df.at[index, 'font_family']  = most_frequent(children_df['font_family'])
+        block_df.at[index, 'font_color']   = most_frequent(children_df['font_color'])
+        if children_flag==True:
+            block_df = sub_children(block_df,children_df,index)
         else:
-            block_df.at[index, 'children']     = children_df.to_json()
-    else:
-        block_df.at[index, 'children']     = None
-    index += 1
+            if len(children_df)>1:
+                block_df.at[index, 'children']     = children_df.to_json()
+            else:
+                block_df.at[index, 'children']     = None
+        index += 1
+        
+    except:
+        pass
+    
     return block_df,index
 
+def sub_children(block_df,children_df,index):
+    try:
+        if len(children_df)>1:
+            block_df.at[index, 'children']     = children_df.to_json()
+        else:
+            if all(v is None for v in children_df['children']):
+                block_df.at[index, 'children']     = None
+            else:
+                flg=False
+                for v in children_df['children']:
+                    if math.isnan(v):
+                        flg=False
+                    else:
+                        flg=True
+                if flg:
+                    block_df.at[index, 'children']     = children_df.to_json()
+                else:
+                    block_df.at[index, 'children']     = None
+    except:
+        pass
+    return block_df
 
 
 def length_ratio(para_right,para_left,left2,right2,left1,right1):
