@@ -2,7 +2,7 @@ import pandas as pd
 from utilities import (extract_image_from_pdf, extract_xml_from_digital_pdf, create_directory, read_directory_files, get_subdirectories,
                         get_string_xmltree, get_xmltree, get_specific_tags, get_page_texts_ordered, get_page_text_element_attrib, get_ngram)
 
-from box_horizontal_evalutions import (are_hlines)
+from box_horizontal_evalutions import (are_hlines, are_hlines_superscript)
 from box_grouping import arrange_grouped_line_indices
 
 def merge_horizontal_blocks(in_df, configs, debug=False):
@@ -36,6 +36,10 @@ def merge_horizontal_blocks(in_df, configs, debug=False):
                 index += 1
         else:
             children_df  = df.loc[lines[0][0]:lines[0][-1]].copy(deep=True)
+            '''
+                - check and update superscript attrib
+            '''
+            children_df  = update_superscript_attribute(children_df, configs, debug=debug)
             
             top          = children_df['text_top'].min()
             left         = children_df['text_left'].min()
@@ -62,3 +66,31 @@ def merge_horizontal_blocks(in_df, configs, debug=False):
             index += 1
     
     return block_df
+
+def update_attribute_index(df, index, attrib):
+    if (df.iloc[index]['attrib'] == None):
+        df.at[index, 'attrib'] = attrib
+    else:
+        if pd.isna(df.iloc[index]['attrib']) or df.iloc[index]['attrib'] == '':
+            df.at[index, 'attrib'] = attrib
+        else:
+            prev_attrib = df.iloc[index]['attrib']
+            df.at[index, 'attrib'] = join(prev_attrib) + ',' + attrib
+    return df
+    
+
+def update_superscript_attribute(in_df, configs, debug=False):
+    df                 = in_df.copy(deep=True)
+    
+    df.sort_values('text_left', inplace=True)
+    df                 = in_df.reset_index(drop=True)
+    df.reset_index(inplace=True)
+    
+    connections        = []
+    index_grams        = get_ngram(list(df.index.values), window_size=2)
+    for index_gram in index_grams:
+        status, script_index, text_index = are_hlines_superscript(df, configs, index_gram[0], index_gram[1], debug=debug)
+        if status:
+            df = update_attribute_index(df, script_index, 'SUPERSCRIPT')
+            
+    return df
