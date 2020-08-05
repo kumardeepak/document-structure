@@ -1,18 +1,21 @@
 import os
-from utilities import (extract_image_from_pdf, extract_xml_from_digital_pdf,
+from service.utilities import (extract_image_from_pdf, extract_xml_from_digital_pdf,
                        create_directory, read_directory_files, get_subdirectories,
                        get_string_xmltree, get_xmltree, get_specific_tags, get_page_texts_ordered,
                        get_page_text_element_attrib, get_ngram
                       )
-from xml_document_info import (get_xml_info)
-from box_horizontal_operations import (merge_horizontal_blocks)
-from box_vertical_operations import (merge_vertical_blocks)
+from service.xml_document_info import (get_xml_info)
+from service.box_horizontal_operations import (merge_horizontal_blocks)
+from service.box_vertical_operations import (merge_vertical_blocks)
 
         
 def xml_dfs(base_dir, filename):
     input_dir  = os.path.join(base_dir, 'input')
     output_dir = os.path.join(base_dir, 'output')
-    pdf_filepath   = os.path.join(input_dir, filename)
+    os.system('mkdir -p {0}'.format(input_dir))
+    os.system('mkdir -p {0}'.format(output_dir))
+
+    pdf_filepath   = os.path.join(base_dir, filename)
     working_dir    = os.path.join(output_dir, os.path.splitext(filename)[0])
 
     ret            = create_directory(working_dir)

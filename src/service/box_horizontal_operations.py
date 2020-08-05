@@ -1,9 +1,9 @@
 import pandas as pd
-from utilities import (extract_image_from_pdf, extract_xml_from_digital_pdf, create_directory, read_directory_files, get_subdirectories,
+from service.utilities import (extract_image_from_pdf, extract_xml_from_digital_pdf, create_directory, read_directory_files, get_subdirectories,
                         get_string_xmltree, get_xmltree, get_specific_tags, get_page_texts_ordered, get_page_text_element_attrib, get_ngram)
 
-from box_horizontal_evalutions import (are_hlines)
-from box_grouping import arrange_grouped_line_indices
+from service.box_horizontal_evalutions import (are_hlines)
+from service.box_grouping import arrange_grouped_line_indices
 
 def merge_horizontal_blocks(in_df, configs, debug=False):
     df                 = in_df.copy(deep=True)

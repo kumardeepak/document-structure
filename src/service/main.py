@@ -1,8 +1,8 @@
 import os
 import pandas as pd
-import Get_XML 
-from left_right_on_block import left_right_margin
-import config 
+from service import Get_XML
+from service.left_right_on_block import left_right_margin
+from  configs import config
 
 
 def process_page_blocks(page_df, configs,block_configs, debug=False):
@@ -25,9 +25,9 @@ def process_block(children, block_configs):
     dfs = left_right_margin(children, block_configs)
     return dfs
 
-def main():
+def DocumentStructure(file_name):
     Final_dfs = []
-    xml_dfs, image_files = Get_XML.xml_dfs(config.base_dir, config.filename)
+    xml_dfs, image_files = Get_XML.xml_dfs(config.base_dir, file_name)
     Total_Page = len(xml_dfs)
 
     for file_index in range(Total_Page):

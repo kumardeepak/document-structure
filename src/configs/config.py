@@ -1,61 +1,24 @@
-import logging
-import os
-import configs
-from configs import development as dev_config
 
-logging.basicConfig(
-    filename=os.getenv("SERVICE_LOG", "server.log"),
-    level=logging.DEBUG,
-    format="%(levelname)s: %(asctime)s \
-        pid:%(process)s module:%(module)s %(message)s",
-    datefmt="%d/%m/%y %H:%M:%S",
-)
+#base_dir   = '/home/naresh/Tesseract/DS_Module/data'
+base_dir   = '/home/dhiraj/Documents/Anuwad/document-structure/data/input'
+filename   = '6251_2016_3_1501_19387_Judgement_06-Jan-2020.pdf'
 
-class AppConfig:
-    @staticmethod
-    def get_debug():
-        return os.getenv("DEBUG", dev_config.DEBUG)
+
+document_configs = {
+    'LANGUAGE_TYPE': 'eng',
     
-    @staticmethod
-    def get_api_url_prefix():
-        return "/api"
-
-    @staticmethod
-    def get_host():
-        return os.getenv("APP_HOST", dev_config.APP_HOST)
+    'HORI_BLOCK_WDTH_DIFF_PERC': 0.85,
+    'SUPERSCRIPT_HEIGHT_DIFFERENCE': 7.0,
+    'HORI_SPACE_TOO_CLOSE': 10.0,
     
-    @staticmethod
-    def get_port():
-        return os.getenv("APP_PORT", dev_config.APP_PORT)
+    'VERTICAL_SPACE_TOO_CLOSE': 5.0,
+    'AVERAGE_VERTICAL_SPACE': 12.0,
+    'LEFT_OR_RIGHT_ALIGNMENT_MARGIN': 20.0
+}
 
-    @staticmethod
-    def get_file_storage_path():
-        return os.getenv("FILE_STORAGE_PATH", dev_config.FILE_STORAGE_PATH)
-    
-    @staticmethod
-    def get_enable_cors():
-        return os.getenv("ENABLE_CORS", dev_config.ENABLE_CORS)
-
-    @staticmethod
-    def get_jwt_secret_key():
-        return os.getenv("JWT_SECRET_KEY", dev_config.JWT_SECRET_KEY)
-
-    @staticmethod
-    def get_jwt_access_token_expiry_in_mins():
-        return os.getenv("JWT_ACCESS_TOKEN_EXPIRY_IN_MINS", dev_config.JWT_ACCESS_TOKEN_EXPIRY_IN_MINS)
-
-    @staticmethod
-    def get_jwt_refresh_token_expiry_in_days():
-        return os.getenv("JWT_REFRESH_TOKEN_EXPIRY_IN_DAYS", dev_config.JWT_REFRESH_TOKEN_EXPIRY_IN_DAYS)
-
-    @staticmethod
-    def get_redis_hostname():
-        return os.getenv("REDIS_HOSTNAME", dev_config.REDIS_HOSTNAME)
-
-    @staticmethod
-    def get_redis_port():
-        return os.getenv("REDIS_PORT", dev_config.REDIS_PORT)
-
-    @staticmethod
-    def get_supported_upload_file_types():
-        return os.getenv("SUPPORTED_UPLOAD_FILETYPES", dev_config.SUPPORTED_UPLOAD_FILETYPES)
+block_configs = {
+    "right_margin_threshold": 0.10,  "left_margin_threshold": 0.10,
+    "right_break_threshold": 0.04,   "left_break_threshold": 0.05,
+    "header_left_threshold": 0.70,  "header_right_threshold": 0.85,
+    "space_multiply_factor": 1.8
+}

@@ -1,10 +1,10 @@
 import pandas as pd
-from utilities import (extract_image_from_pdf, extract_xml_from_digital_pdf, create_directory, read_directory_files, get_subdirectories,
+from service.utilities import (extract_image_from_pdf, extract_xml_from_digital_pdf, create_directory, read_directory_files, get_subdirectories,
                         get_string_xmltree, get_xmltree, get_specific_tags, get_page_texts_ordered, get_page_text_element_attrib, get_ngram)
 
-from box_font_evalutions import (are_lines_fonts_similar)
-from box_vertical_evalutions import (are_vlines)
-from box_grouping import arrange_grouped_line_indices
+from service.box_font_evalutions import (are_lines_fonts_similar)
+from service.box_vertical_evalutions import (are_vlines)
+from service.box_grouping import arrange_grouped_line_indices
 
 def merge_vertical_blocks(in_df, configs, debug=False):
     df                 = in_df.copy(deep=True)
