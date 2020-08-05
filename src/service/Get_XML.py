@@ -9,7 +9,7 @@ from box_horizontal_operations import (merge_horizontal_blocks)
 from box_vertical_operations import (merge_vertical_blocks)
 
         
-def process(base_dir, filename, document_configs, file_index):
+def xml_dfs(base_dir, filename):
     input_dir  = os.path.join(base_dir, 'input')
     output_dir = os.path.join(base_dir, 'output')
     pdf_filepath   = os.path.join(input_dir, filename)
@@ -23,6 +23,10 @@ def process(base_dir, filename, document_configs, file_index):
     xml_files      = read_directory_files(pdf_xml_dir, pattern='*.xml')
     image_files    = read_directory_files(pdf_image_dir, pattern='*-*.jpg')
     xml_dfs, page_width, page_height = get_xml_info(xml_files[0])
+    return xml_dfs, image_files
+    
+        
+def get_vdf(xml_dfs,image_files,document_configs, file_index):
     img_filepath   = image_files[file_index]
     df             = xml_dfs[file_index]
     in_df   = df.loc[:]
@@ -30,5 +34,3 @@ def process(base_dir, filename, document_configs, file_index):
     h_df    = merge_horizontal_blocks(in_df, document_configs, debug=False)
     v_df    = merge_vertical_blocks(h_df, document_configs, debug=False)
     return v_df
-        
-        
