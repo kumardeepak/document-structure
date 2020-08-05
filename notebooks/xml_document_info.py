@@ -68,6 +68,7 @@ def get_xml_info(filepath):
         f_familys   = []
         f_colors    = []
         ts          = []
+        attrib      = []
         
         texts       = get_specific_tags(page, 'text')
         
@@ -84,11 +85,12 @@ def get_xml_info(filepath):
             f_familys.append(f_family)
             f_colors.append(f_color)
             ts.append(t)
+            attrib.append('')
         
         df = pd.DataFrame(list(zip(t_ts, t_ls, t_ws, t_hs,
-                                        ts, f_sizes, f_familys, f_colors)), 
+                                        ts, f_sizes, f_familys, f_colors, attrib)), 
                           columns =['text_top', 'text_left', 'text_width', 'text_height',
-                                      'text', 'font_size', 'font_family', 'font_color'])
+                                      'text', 'font_size', 'font_family', 'font_color', 'attrib'])
         '''
             remove rows that are redundant.
         '''
