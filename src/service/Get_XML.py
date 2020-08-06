@@ -26,7 +26,7 @@ def xml_dfs(base_dir, filename):
     xml_files      = read_directory_files(pdf_xml_dir, pattern='*.xml')
     image_files    = read_directory_files(pdf_image_dir, pattern='*-*.jpg')
     xml_dfs, page_width, page_height = get_xml_info(xml_files[0])
-    return xml_dfs, image_files
+    return xml_dfs, image_files, page_width, page_height
     
         
 def get_vdf(xml_dfs,image_files,document_configs, file_index):
