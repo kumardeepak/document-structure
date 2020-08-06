@@ -39,10 +39,6 @@ def df_to_json(p_df):
     p_df  = p_df.where(p_df.notnull(), None)
     if len(p_df) > 0 :
         
-        #if pd.Series(['index', 'xml_index']).isin(p_df.columns).all():
-            #p_df=p_df.drop(columns=['index', 'xml_index'])
-        #if 'level_0' in p_df.columns:
-            #p_df=p_df.drop(columns=['index', 'xml_index'])
         drop_col = ['index', 'xml_index','level_0']  
         for col in drop_col:
             if col in p_df.columns:
