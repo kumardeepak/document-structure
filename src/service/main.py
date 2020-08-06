@@ -26,17 +26,18 @@ def process_block(children, block_configs):
     return dfs
 
 def DocumentStructure(file_name):
-    Final_dfs = []
+    #Final_dfs = []
     xml_dfs, image_files = Get_XML.xml_dfs(config.base_dir, file_name)
     Total_Page = len(xml_dfs)
-
+    response = {}
     for file_index in range(Total_Page):
         v_df = Get_XML.get_vdf(xml_dfs, image_files,config.document_configs,file_index)
         p_df = process_page_blocks(v_df, config.document_configs,config.block_configs)
         p_df = p_df.reset_index()
         p_df = p_df.drop(columns=['level_0','index'])
-        Final_dfs.append(p_df)
+        #Final_dfs.append(p_df)
+        response[str(file_index)] = p_df.to_dict('records')
 
+    return response
 
-    return Final_dfs
 
