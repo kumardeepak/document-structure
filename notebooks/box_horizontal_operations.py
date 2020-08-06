@@ -35,12 +35,7 @@ def merge_horizontal_blocks(in_df, configs, debug=False):
                 block_df.loc[index]['children'] = None
                 index += 1
         else:
-            children_df  = df.loc[lines[0][0]:lines[0][-1]].copy(deep=True)
-            '''
-                - check and update superscript attrib
-            '''
-            children_df  = update_superscript_attribute(children_df, configs, debug=debug)
-            
+            children_df  = df.loc[lines[0][0]:lines[0][-1]].copy(deep=True)            
             top          = children_df['text_top'].min()
             left         = children_df['text_left'].min()
             width        = children_df[['text_left', 'text_width']].sum(axis=1).max() - left
@@ -53,6 +48,7 @@ def merge_horizontal_blocks(in_df, configs, debug=False):
             block_df.at[index, 'text_height']  = height
             block_df.at[index, 'text_width']   = width
             
+            children_df.sort_values('text_left', axis = 0, ascending = True, inplace=True)
             block_df.at[index, 'text']         = ' '.join(children_df['text'].values.tolist())
 
             block_df.at[index, 'xml_index']    = children_df['xml_index'].min()
@@ -65,7 +61,7 @@ def merge_horizontal_blocks(in_df, configs, debug=False):
             block_df.at[index, 'children']     = children_df.to_json()
             index += 1
     
-    return block_df
+    return update_superscript_in_horizontal_boxes(block_df, configs, debug=debug)
 
 def update_attribute_index(df, index, attrib):
     if (df.iloc[index]['attrib'] == None):
@@ -75,22 +71,37 @@ def update_attribute_index(df, index, attrib):
             df.at[index, 'attrib'] = attrib
         else:
             prev_attrib = df.iloc[index]['attrib']
-            df.at[index, 'attrib'] = prev_attrib + ',' + attrib
+            attribs     = prev_attrib.split(',')
+            attribs.append(attrib)
+            attribs     = list(set(attribs))
+            df.at[index, 'attrib'] = ','.join(attribs)
     return df
-    
 
-def update_superscript_attribute(in_df, configs, debug=False):
-    df                 = in_df.copy(deep=True)
+
+def update_superscript_attribute(row_df, configs, debug=False):
+    df                 = row_df.copy(deep=True)
     
     df.sort_values('text_left', inplace=True)
-    df                 = in_df.reset_index(drop=True)
+    df                 = df.reset_index(drop=True)
     df.reset_index(inplace=True)
     
     connections        = []
     index_grams        = get_ngram(list(df.index.values), window_size=2)
     for index_gram in index_grams:
-        status, script_index, text_index = are_hlines_superscript(df, configs, index_gram[0], index_gram[1], debug=debug)
+        status, text_index, script_index = are_hlines_superscript(df, configs, index_gram[0], index_gram[1], debug=debug)
+        
         if status:
             df = update_attribute_index(df, script_index, 'SUPERSCRIPT')
+            if debug:
+                print('superscript-index: (%d), text-index (%d), superscript-text (%s) text (%s)' % (script_index, text_index, df.iloc[script_index]['text'], df.iloc[text_index]['text']))
             
     return df
+
+def update_superscript_in_horizontal_boxes(in_df, configs, debug=False):
+    for index, row in in_df.iterrows():
+        if row['children'] != None:
+            children_df = pd.read_json(in_df.iloc[index]['children'])
+            updated_children_df = update_superscript_attribute(children_df, configs, debug)
+            in_df.at[index, 'children'] = updated_children_df.to_json()
+
+    return in_df
