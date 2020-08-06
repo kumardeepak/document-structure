@@ -1,4 +1,5 @@
 from pytesseract import pytesseract
+from PIL import Image
 
 def extract_text_from_image(filepath, desired_width, desired_height, df, lang='hin'):
     image       = Image.open(filepath)
