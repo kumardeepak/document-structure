@@ -34,7 +34,7 @@ def DocumentStructure(file_name):
         v_df = Get_XML.get_vdf(xml_dfs, image_files,config.document_configs,file_index)
         p_df = process_page_blocks(v_df, config.document_configs,config.block_configs)
         p_df = p_df.reset_index()
-        p_df = p_df.drop(columns=['level_0','index'])
+        p_df = p_df.drop(columns=['index'])
         #Final_dfs.append(p_df)
         response[str(file_index)] = p_df.to_dict('records')
 

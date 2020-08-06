@@ -28,7 +28,7 @@ def children_condition(block_df,children_df,index,children_flag):
         left         = children_df['text_left'].min()
         width        = children_df[['text_left', 'text_width']].sum(axis=1).max() - left
 
-        children_df.sort_values('text_top', axis = 0, ascending = True, inplace=True)
+        #children_df.sort_values('text_top', axis = 0, ascending = True, inplace=True)
         height       = (children_df.iloc[-1]['text_top'] + children_df.iloc[-1]['text_height']) - children_df['text_top'].min()
 
         block_df.at[index, 'text_top']     = top
@@ -149,7 +149,7 @@ def left_right_condition(flag,index,df,skip,current_line,left1,right1,para_right
 def left_right_margin(children, block_configs):
     para_left = children['text_left'];  para_width = children['text_width'];  para_right = para_left+para_width
     children_df = children['children']
-    in_df      = pd.read_json(children_df);  df = in_df.copy(deep=True);  df = in_df.reset_index()
+    in_df      = pd.read_json(children_df); df = in_df.reset_index()
     cols       = df.columns.values.tolist()
     block_df        = pd.DataFrame(columns=cols)
     
