@@ -75,7 +75,7 @@ def update_attribute_index(df, index, attrib):
             df.at[index, 'attrib'] = attrib
         else:
             prev_attrib = df.iloc[index]['attrib']
-            df.at[index, 'attrib'] = join(prev_attrib) + ',' + attrib
+            df.at[index, 'attrib'] = prev_attrib + ',' + attrib
     return df
     
 

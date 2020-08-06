@@ -68,7 +68,7 @@ def get_xml_info(filepath):
         f_familys   = []
         f_colors    = []
         ts          = []
-        attrib      = []
+        attribs     = []
         
         texts       = get_specific_tags(page, 'text')
         
@@ -85,10 +85,10 @@ def get_xml_info(filepath):
             f_familys.append(f_family)
             f_colors.append(f_color)
             ts.append(t)
-            attrib.append('')
+            attribs.append('')
         
         df = pd.DataFrame(list(zip(t_ts, t_ls, t_ws, t_hs,
-                                        ts, f_sizes, f_familys, f_colors, attrib)), 
+                                        ts, f_sizes, f_familys, f_colors, attribs)), 
                           columns =['text_top', 'text_left', 'text_width', 'text_height',
                                       'text', 'font_size', 'font_family', 'font_color', 'attrib'])
         '''
@@ -96,7 +96,6 @@ def get_xml_info(filepath):
         '''
         df  = remove_redundant_rows(df)
 
-        df.sort_values(by=['text_top'],inplace=True)
         df.reset_index(inplace=True)
         df.rename(columns={'index':'xml_index'},inplace=True)
         dfs.append(normalize_page_xml_df(df, width, height))
