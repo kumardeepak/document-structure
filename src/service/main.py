@@ -64,12 +64,17 @@ def df_to_json(p_df):
 def DocumentStructure(file_name):
     
     xml_dfs, image_files, page_width, page_height = Get_XML.xml_dfs(config.base_dir, file_name)
-    header_region , footer_region = prepocess_pdf_rgions(xml_dfs,page_height)
+    multiple_pages = False
+    if len(xml_dfs) > 0 :
+        multiple_pages =True
+        header_region, footer_region = prepocess_pdf_rgions(xml_dfs, page_height)
+
+
 
     Total_Page = len(xml_dfs)
     response = {'result':[]}
     for file_index in range(Total_Page):
-        v_df = Get_XML.get_vdf(xml_dfs, image_files,config.document_configs,file_index,header_region , footer_region)
+        v_df = Get_XML.get_vdf(xml_dfs, image_files,config.document_configs,file_index,header_region , footer_region,multiple_pages)
         p_df = process_page_blocks(v_df, config.document_configs,config.block_configs)
         p_df = p_df.reset_index(drop=True)
         final_json = get_response(p_df, file_index,page_width,page_height)
