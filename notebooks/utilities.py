@@ -11,8 +11,19 @@ def extract_image_from_pdf(filepath, workspace_output_dir):
     image_filename = os.path.splitext(os.path.basename(filepath))[0]
     
     create_directory(working_dir)
-    images = pdf2image.convert_from_path(filepath, dpi=300, output_file=image_filename, output_folder=working_dir, fmt='jpg')
-    return working_dir
+    images = pdf2image.convert_from_path(filepath, dpi=300, output_file=image_filename, output_folder=working_dir, fmt='jpg', paths_only=True)
+    return images
+
+def get_pdf_image_at_page(filepath, workspace_output_dir, page_index):
+    working_dir = os.path.join(workspace_output_dir, 'images')
+    image_filename = os.path.splitext(os.path.basename(filepath))[0]
+    
+    create_directory(working_dir)
+    images = pdf2image.convert_from_path(filepath, dpi=300, 
+                                         output_file=image_filename, output_folder=working_dir, 
+                                         fmt='jpg', paths_only=True,
+                                         first_page=page_index, last_page=page_index)
+    return images[0]
 
 # Execute pdftohtml to extract XML file of digital PDF
 def extract_xml_from_digital_pdf(filepath, workspace_output_dir):
