@@ -102,7 +102,7 @@ def get_xml_info(filepath):
 
     return dfs, width, height
 
-def get_xml_image_info_per_page(filepath):
+def get_xml_image_info(filepath):
     xml             = get_xmltree(filepath)
     tag             = 'page'
     pages           = get_specific_tags(xml, tag)
