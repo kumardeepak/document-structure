@@ -25,10 +25,12 @@ def process_block(children, block_configs):
     dfs = left_right_margin(children, block_configs)
     return dfs
 
-def get_response(p_df,page_no,page_width,page_height):
+def get_response(p_df,img_df,page_no,page_width,page_height):
 
     p_df['block_id'] = range(len(p_df))
-    myDict = {'page_no': page_no,'page_width': page_width,'page_height':page_height,'blocks':{}}
+    myDict = {'page_no': page_no,'page_width': page_width,'page_height':page_height,'image':{},'blocks':{}}
+    image_data = process_image_df(myDict,img_df)
+    myDict['image']=image_data
     page_data = df_to_json(p_df)
     myDict['blocks']=page_data
     return myDict
@@ -61,9 +63,25 @@ def df_to_json(p_df):
             page_data.append(block)
         
     return page_data
+
+def process_image_df(myDict,img_df):
+    image_data = []
+    if len(img_df)>0:
+        drop_col = ['index', 'xml_index','level_0']  
+        for col in drop_col:
+            if col in img_df.columns:
+                img_df=img_df.drop(columns=[col])
+                
+        for index ,row in img_df.iterrows():
+            block = row.to_dict()
+            image_data.append(block)
+        return image_data
+    else:
+        return None
+    
 def DocumentStructure(file_name):
     
-    xml_dfs, image_files, page_width, page_height = Get_XML.xml_dfs(config.base_dir, file_name)
+    img_dfs,xml_dfs, image_files, page_width, page_height = Get_XML.xml_dfs(config.base_dir, file_name)
     multiple_pages = False
     if len(xml_dfs) > 1:
         multiple_pages =True
@@ -77,7 +95,7 @@ def DocumentStructure(file_name):
         v_df = Get_XML.get_vdf(xml_dfs, image_files,config.document_configs,file_index,header_region , footer_region,multiple_pages)
         p_df = process_page_blocks(v_df, config.document_configs,config.block_configs)
         p_df = p_df.reset_index(drop=True)
-        final_json = get_response(p_df, file_index,page_width,page_height)
+        final_json = get_response(p_df,img_dfs,page_no,page_width,page_height)
         response['result'].append(final_json)
 
     return response

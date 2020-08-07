@@ -4,7 +4,9 @@ from service.utilities import (extract_image_from_pdf, extract_xml_from_digital_
                        get_string_xmltree, get_xmltree, get_specific_tags, get_page_texts_ordered,
                        get_page_text_element_attrib, get_ngram
                       )
-from service.xml_document_info import (get_xml_info)
+from service.xml_document_info import (get_xml_info, get_xml_image_info)
+
+
 from service.box_horizontal_operations import (merge_horizontal_blocks)
 from service.box_vertical_operations import (merge_vertical_blocks)
 from service.preprocess import  tag_heaader_footer_attrib
@@ -27,7 +29,8 @@ def xml_dfs(base_dir, filename):
     xml_files      = read_directory_files(pdf_xml_dir, pattern='*.xml')
     image_files    = read_directory_files(pdf_image_dir, pattern='*-*.jpg')
     xml_dfs, page_width, page_height = get_xml_info(xml_files[0])
-    return xml_dfs, image_files, page_width, page_height
+    img_dfs, page_width, page_height = get_xml_image_info(xml_files[0])
+    return img_dfs,xml_dfs, image_files, page_width, page_height
     
         
 def get_vdf(xml_dfs,image_files,document_configs, file_index,header_region , footer_region,multiple_pages):
