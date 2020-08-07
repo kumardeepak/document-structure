@@ -15,3 +15,4 @@ def extract_text_from_image(filepath, desired_width, desired_height, df, lang='h
         df.at[index, 'text'] = pytesseract.image_to_string(crop_image, lang=lang)
 
     return df
+    
