@@ -1,1 +1,1 @@
-from .fileupload import FILEUPLOAD_BLUEPRINT
+from .documentstructure import DOCUMENTSTRUCTURE_BLUEPRINT

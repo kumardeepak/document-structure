@@ -1,1 +1,1 @@
-from .fileupload import FileDownloadResource, FileUploadResource
+#from .fileupload import FileDownloadResource, FileUploadResource
