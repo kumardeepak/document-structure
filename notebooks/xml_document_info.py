@@ -3,7 +3,7 @@ import os
 from utilities import (extract_image_from_pdf, extract_xml_from_digital_pdf, 
                         create_directory, read_directory_files, get_subdirectories,
                         get_string_xmltree, get_xmltree, get_specific_tags, get_page_texts_ordered,
-                       get_page_text_element_attrib
+                       get_page_text_element_attrib, get_page_image_element_attrib
                        )
 
 def get_document_width_height(pages):
@@ -102,3 +102,42 @@ def get_xml_info(filepath):
 
     return dfs, width, height
 
+def get_xml_image_info_per_page(filepath):
+    xml             = get_xmltree(filepath)
+    tag             = 'page'
+    pages           = get_specific_tags(xml, tag)
+    print('Total number of pages (%d) in file (%s)' % (len(pages), os.path.basename(filepath)))
+    
+    width, height   = get_document_width_height(pages)
+
+    dfs             = []
+    for page in pages:
+        t_ts        = []
+        t_ls        = []
+        t_ws        = []
+        t_hs        = []
+        ts          = []
+        attribs     = []
+        
+        images      = get_specific_tags(page, 'image')
+        
+        for index, image in enumerate(images):
+            p_t, p_l, p_w, p_h, t_t, t_l, t_w, t_h, img_base64 = get_page_image_element_attrib(page, image)
+
+            if img_base64 == None:
+                continue
+
+            t_ts.append(t_t)
+            t_ls.append(t_l)
+            t_ws.append(t_w)
+            t_hs.append(t_h)
+            ts.append(img_base64)
+            attribs.append('IMAGE')
+        
+        df = pd.DataFrame(list(zip(t_ts, t_ls, t_ws, t_hs, ts, attribs)), 
+                          columns =['text_top', 'text_left', 'text_width', 'text_height', 'base64', 'attrib'])
+
+        df.reset_index(inplace=True)
+        dfs.append(normalize_page_xml_df(df, width, height))
+
+    return dfs, width, height

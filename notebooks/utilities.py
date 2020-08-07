@@ -3,6 +3,7 @@ import shutil
 import glob
 import pdf2image
 from lxml import etree
+import base64
 
 # extract pdf to image
 def extract_image_from_pdf(filepath, workspace_output_dir):
@@ -114,6 +115,20 @@ def get_page_text_element_attrib(fontspecs, page, text):
             int(text.attrib['top']), int(text.attrib['left']), int(text.attrib['width']), int(text.attrib['height']),\
             int(font_size), font_family, font_color,\
             ''.join(text.itertext())
+
+def get_page_image_element_attrib(page, image):
+
+    with open(image.attrib['src'], "rb") as img_file:
+        img_base64 = base64.b64encode(img_file.read())
+
+        return  int(page.attrib['top']), int(page.attrib['left']), int(page.attrib['width']), int(page.attrib['height']), \
+                int(image.attrib['top']), int(image.attrib['left']), int(image.attrib['width']), int(image.attrib['height']),\
+                img_base64
+    
+    return  int(page.attrib['top']), int(page.attrib['left']), int(page.attrib['width']), int(page.attrib['height']), \
+            int(image.attrib['top']), int(image.attrib['left']), int(image.attrib['width']), int(image.attrib['height']),\
+            None
+
 
 #### parse HTML page
 
