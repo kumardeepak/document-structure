@@ -95,7 +95,7 @@ def DocumentStructure(file_name):
         v_df = Get_XML.get_vdf(xml_dfs, image_files,config.document_configs,file_index,header_region , footer_region,multiple_pages)
         p_df = process_page_blocks(v_df, config.document_configs,config.block_configs)
         p_df = p_df.reset_index(drop=True)
-        final_json = get_response(p_df,img_dfs,page_no,page_width,page_height)
+        final_json = get_response(p_df,img_dfs,file_index,page_width,page_height)
         response['result'].append(final_json)
 
     return response
