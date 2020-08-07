@@ -101,10 +101,10 @@ def add_attrib(page_df, region_to_change, attrib, margin=5):
         for index, row in region_to_change.iterrows():
             area = [row['text_top'] - margin, row['text_left'] - margin, row['text_top'] + row['text_height'] + margin,
                     row['text_left'] + row['text_width'] + margin]
-            print(area)
-            print((page_df['text_top'] >= area[0]) & (page_df['text_left'] >= area[1]) & (
-                        page_df['text_top'] + page_df['text_height'] <= area[2]) & (
-                              page_df['text_left'] + page_df['text_width'] <= area[3]))
+            #print(area)
+            #print((page_df['text_top'] >= area[0]) & (page_df['text_left'] >= area[1]) & (
+            #            page_df['text_top'] + page_df['text_height'] <= area[2]) & (
+            #                  page_df['text_left'] + page_df['text_width'] <= area[3]))
             page_df['attrib'][(page_df['text_top'] >= area[0]) & (page_df['text_left'] >= area[1]) & (
                         page_df['text_top'] + page_df['text_height'] <= area[2]) & (
                                           page_df['text_left'] + page_df['text_width'] <= area[3])] = attrib
