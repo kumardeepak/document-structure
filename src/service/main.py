@@ -67,7 +67,7 @@ def DocumentStructure(file_name):
     multiple_pages = False
     if len(xml_dfs) > 1:
         multiple_pages =True
-        header_region, footer_region = prepocess_pdf_rgions(xml_dfs, page_height)
+    header_region, footer_region = prepocess_pdf_rgions(xml_dfs, page_height)
 
 
 
