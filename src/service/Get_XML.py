@@ -12,7 +12,7 @@ from service.preprocess import  tag_heaader_footer_attrib
         
 def xml_dfs(base_dir, filename):
     input_dir  = os.path.join(base_dir, 'input')
-    output_dir = os.path.join(base_dir, 'output')
+    output_dir = os.path.join('/home/ubuntu', '.output')
     os.system('mkdir -p {0}'.format(input_dir))
     os.system('mkdir -p {0}'.format(output_dir))
 
