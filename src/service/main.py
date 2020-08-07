@@ -65,7 +65,7 @@ def DocumentStructure(file_name):
     
     xml_dfs, image_files, page_width, page_height = Get_XML.xml_dfs(config.base_dir, file_name)
     multiple_pages = False
-    if len(xml_dfs) > 0 :
+    if len(xml_dfs) > 1:
         multiple_pages =True
         header_region, footer_region = prepocess_pdf_rgions(xml_dfs, page_height)
 
