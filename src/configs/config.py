@@ -22,3 +22,5 @@ block_configs = {
     "header_left_threshold": 0.70,  "header_right_threshold": 0.85,
     "space_multiply_factor": 1.8
 }
+
+preprocess_config = {'header_cut':0.15  , 'footer_cut' :0.15 ,'repeat_threshold' :0.95}
