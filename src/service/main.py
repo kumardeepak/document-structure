@@ -69,7 +69,7 @@ def DocumentStructure(file_name):
     for file_index in range(Total_Page):
         v_df = Get_XML.get_vdf(xml_dfs, image_files,config.document_configs,file_index)
         p_df = process_page_blocks(v_df, config.document_configs,config.block_configs)
-        p_df = p_df.reset_index()
+        p_df = p_df.reset_index(drop=True)
         final_json = get_response(p_df, file_index,page_width,page_height)
         response['result'].append(final_json)
 
