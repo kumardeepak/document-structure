@@ -1,7 +1,7 @@
 
 #base_dir   = '/home/naresh/Tesseract/DS_Module/data/input/'
 #base_dir   = '/home/dhiraj/Documents/Anuwad/document-structure/data/input'
-base_dif = '/opt/share/nginx/upload'
+base_dir = '/opt/share/nginx/upload'
 filename   = '6251_2016_3_1501_19387_Judgement_06-Jan-2020.pdf'
 HOST = '0.0.0.0'
 PORT = 7000
