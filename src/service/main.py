@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from service import Get_XML
 from service.left_right_on_block import left_right_margin
-#from  configs import config
+from  configs import config
 from configs import bakup_config
 from service.preprocess import prepocess_pdf_rgions
 
