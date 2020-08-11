@@ -11,7 +11,7 @@ def extract_image_from_pdf(filepath, workspace_output_dir):
     image_filename = os.path.splitext(os.path.basename(filepath))[0]
     
     create_directory(working_dir)
-    images = pdf2image.convert_from_path(filepath, dpi=300, output_file=image_filename, output_folder=working_dir, fmt='jpg', paths_only=True)
+    images = pdf2image.convert_from_path(filepath, dpi=300, output_file=image_filename, output_folder=working_dir, fmt='jpg')
     return working_dir
 
 def get_pdf_image_at_page(filepath, workspace_output_dir, page_index):
