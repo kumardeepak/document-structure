@@ -3,7 +3,7 @@ from datetime import timedelta
 from flask import Flask, jsonify
 from flask.blueprints import Blueprint
 from flask_cors import CORS
-from configs import config
+#from configs import config
 
 # from flask_jwt_extended import (
 #     JWTManager, create_access_token, create_refresh_token, get_jti,
