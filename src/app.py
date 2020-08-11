@@ -13,7 +13,7 @@ from configs import config
 import routes
 import logging
 import os
-from configs import AppConfig
+from configs.bakup_config import AppConfig
 
 
 server                                          = Flask(__name__)
