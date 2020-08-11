@@ -1,6 +1,6 @@
 import pandas as pd
-from configs.config import  preprocess_config
-
+from configs.backup_config import AppConfig
+preprocess_config = AppConfig.get_preprocess_configs()
 
 def cut_page(page_df ,height ,cut_at ,direction):
 
