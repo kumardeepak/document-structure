@@ -3,6 +3,7 @@ import shutil
 import glob
 import pdf2image
 from lxml import etree
+import base64
 
 # extract pdf to image
 def extract_image_from_pdf(filepath, workspace_output_dir):
@@ -10,8 +11,19 @@ def extract_image_from_pdf(filepath, workspace_output_dir):
     image_filename = os.path.splitext(os.path.basename(filepath))[0]
     
     create_directory(working_dir)
-    images = pdf2image.convert_from_path(filepath, dpi=300, output_file=image_filename, output_folder=working_dir, fmt='jpg')
+    images = pdf2image.convert_from_path(filepath, dpi=300, output_file=image_filename, output_folder=working_dir, fmt='jpg', paths_only=True)
     return working_dir
+
+def get_pdf_image_at_page(filepath, workspace_output_dir, page_index):
+    working_dir = os.path.join(workspace_output_dir, 'images')
+    image_filename = os.path.splitext(os.path.basename(filepath))[0]
+    
+    create_directory(working_dir)
+    images = pdf2image.convert_from_path(filepath, dpi=300, 
+                                         output_file=image_filename, output_folder=working_dir, 
+                                         fmt='jpg', paths_only=True,
+                                         first_page=page_index, last_page=page_index)
+    return images[0]
 
 # Execute pdftohtml to extract XML file of digital PDF
 def extract_xml_from_digital_pdf(filepath, workspace_output_dir):
@@ -114,6 +126,20 @@ def get_page_text_element_attrib(fontspecs, page, text):
             int(text.attrib['top']), int(text.attrib['left']), int(text.attrib['width']), int(text.attrib['height']),\
             int(font_size), font_family, font_color,\
             ''.join(text.itertext())
+
+def get_page_image_element_attrib(page, image):
+
+    with open(image.attrib['src'], "rb") as img_file:
+        img_base64 = base64.b64encode(img_file.read())
+
+        return  int(page.attrib['top']), int(page.attrib['left']), int(page.attrib['width']), int(page.attrib['height']), \
+                int(image.attrib['top']), int(image.attrib['left']), int(image.attrib['width']), int(image.attrib['height']),\
+                img_base64
+    
+    return  int(page.attrib['top']), int(page.attrib['left']), int(page.attrib['width']), int(page.attrib['height']), \
+            int(image.attrib['top']), int(image.attrib['left']), int(image.attrib['width']), int(image.attrib['height']),\
+            None
+
 
 #### parse HTML page
 
