@@ -2,8 +2,8 @@ import os
 import pandas as pd
 from service import Get_XML
 from service.left_right_on_block import left_right_margin
-from  configs import config
-from configs import bakup_config
+#from  configs import config
+from configs.backup_config import AppConfig
 from service.preprocess import prepocess_pdf_rgions
 
 def process_page_blocks(page_df, configs,block_configs, debug=False):
