@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import base64
 from service import Get_XML
 from service.left_right_on_block import left_right_margin
 #from  configs import config
@@ -75,6 +76,7 @@ def process_image_df(myDict,img_df):
                 
         for index ,row in img_df.iterrows():
             block = row.to_dict()
+            block['base64'] = block['base64'].decode('ascii')
             image_data.append(block)
         return image_data
     else:
