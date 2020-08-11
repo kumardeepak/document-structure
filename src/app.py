@@ -4,6 +4,7 @@ from flask import Flask, jsonify
 from flask.blueprints import Blueprint
 from flask_cors import CORS
 from configs import config
+
 # from flask_jwt_extended import (
 #     JWTManager, create_access_token, create_refresh_token, get_jti,
 #     jwt_refresh_token_required, get_jwt_identity, jwt_required, get_raw_jwt
@@ -12,7 +13,7 @@ from configs import config
 import routes
 import logging
 import os
-#from configs import AppConfig
+from configs import AppConfig
 
 
 server                                          = Flask(__name__)
@@ -32,4 +33,5 @@ for blueprint in vars(routes).values():
 #@server.route('/api/v1/info', methods=['GET'])
 if __name__ == "__main__":
     print(server.url_map)
-    server.run(host=config.HOST, port=config.PORT, debug=False)
+    #server.run(host=config.HOST, port=config.PORT, debug=False)
+    server.run(host=AppConfig.get_host(), port=AppConfig.get_port(), debug=AppConfig.get_debug())

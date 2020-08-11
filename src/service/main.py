@@ -2,7 +2,8 @@ import os
 import pandas as pd
 from service import Get_XML
 from service.left_right_on_block import left_right_margin
-from  configs import config
+#from  configs import config
+from configs import AppConfig
 from service.preprocess import prepocess_pdf_rgions
 
 def process_page_blocks(page_df, configs,block_configs, debug=False):
@@ -30,7 +31,7 @@ def get_response(p_df,img_df,page_no,page_width,page_height):
     p_df['block_id'] = range(len(p_df))
     myDict = {'page_no': page_no,'page_width': page_width,'page_height':page_height,'image':{},'blocks':{}}
     image_data = process_image_df(myDict,img_df)
-    myDict['image']=image_data
+    myDict['images']=image_data
     page_data = df_to_json(p_df)
     myDict['blocks']=page_data
     return myDict
@@ -81,7 +82,7 @@ def process_image_df(myDict,img_df):
     
 def DocumentStructure(file_name):
     
-    img_dfs,xml_dfs, image_files, page_width, page_height = Get_XML.xml_dfs(config.base_dir, file_name)
+    img_dfs,xml_dfs, image_files, page_width, page_height = Get_XML.xml_dfs(AppConfig.get_base_dir_path, file_name)
     multiple_pages = False
     if len(xml_dfs) > 1:
         multiple_pages =True
@@ -93,8 +94,9 @@ def DocumentStructure(file_name):
     response = {'result':[]}
     for file_index in range(Total_Page):
         img_df = img_dfs[file_index]
-        v_df = Get_XML.get_vdf(xml_dfs, image_files,config.document_configs,file_index,header_region , footer_region,multiple_pages)
-        p_df = process_page_blocks(v_df, config.document_configs,config.block_configs)
+        #v_df = Get_XML.get_vdf(xml_dfs, image_files,config.document_configs,file_index,header_region , footer_region,multiple_pages)
+        v_df = Get_XML.get_vdf(xml_dfs, image_files,AppConfig.get_document_configs,file_index,header_region , footer_region,multiple_pages)
+        p_df = process_page_blocks(v_df, AppConfig.get_document_configs,AppConfig.get_block_configs)
         p_df = p_df.reset_index(drop=True)
         final_json = get_response(p_df,img_df,file_index,page_width,page_height)
         response['result'].append(final_json)

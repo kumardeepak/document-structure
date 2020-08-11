@@ -31,7 +31,27 @@ class AppConfig:
     @staticmethod
     def get_file_storage_path():
         return os.getenv("FILE_STORAGE_PATH", dev_config.FILE_STORAGE_PATH)
+
+    @staticmethod
+    def get_base_dir_path():
+        return os.getenv("BASE_DIR_PATH", dev_config.BASE_DIR)
+
+    @staticmethod
+    def get_file_name():
+        return os.getenv("FILE_NAME", dev_config.FILE_NAME)
     
+    @staticmethod
+    def get_document_configs():
+        return os.getenv("DOCUMENT_CONFIGS", dev_config.DOCUMENT_CONFIGS)
+
+    @staticmethod
+    def get_block_configs():
+        return os.getenv("BLOCK_CONFIGS", dev_config.BLOCK_CONFIGS)
+
+    @staticmethod
+    def get_preprocess_configs():
+        return os.getenv("PREPROCESS_CONFIGS", dev_config.PREPROCESS_CONFIGS)
+
     @staticmethod
     def get_enable_cors():
         return os.getenv("ENABLE_CORS", dev_config.ENABLE_CORS)
