@@ -19,9 +19,9 @@ class TableAndLine:
             x,y,w,h = shape
             rect    = self.get_external_coordinates(intersection[y:y+h,x:x+w])
             if len(rect) == 0:
-                lines.append({'text_left': x, 'text_top': y, 'text_width': w, 'text_height': h, 'attrib': 'HORIZONTAL_LINE'})
+                lines.append({'text_top': y, 'text_left': x, 'text_width': w, 'text_height': h, 'attrib': 'HORIZONTAL_LINE'})
             else:
-                tables.append({'text_left': x, 'text_top': y, 'text_width': w, 'text_height': h, 'attrib': 'TABLE'})
+                tables.append({'text_top': y, 'text_left': x, 'text_width': w, 'text_height': h, 'attrib': 'TABLE'})
         return pd.DataFrame(lines), pd.DataFrame(tables)
 
     def get_external_coordinates(self, intersection):
