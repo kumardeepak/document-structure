@@ -1,8 +1,14 @@
 import cv2
+import pandas as pd
 import numpy as np
 import os
+import logging
+
 
 class TableAndLine:
+    def __init__(self, filepath):
+        self.filepath = filepath
+    
     def get_tables_and_lines(self):
         tables         = []
         lines          = []
@@ -13,10 +19,10 @@ class TableAndLine:
             x,y,w,h = shape
             rect    = self.get_external_coordinates(intersection[y:y+h,x:x+w])
             if len(rect) == 0:
-                lines.append({'x': x, 'y': y, 'w': w, 'h': h})
+                lines.append({'text_left': x, 'text_top': y, 'text_width': w, 'text_height': h, 'attrib': 'HORIZONTAL_LINE'})
             else:
-                tables.append({'x': x, 'y': y, 'w': w, 'h': h})
-        return lines, tables
+                tables.append({'text_left': x, 'text_top': y, 'text_width': w, 'text_height': h, 'attrib': 'TABLE'})
+        return pd.DataFrame(lines), pd.DataFrame(tables)
 
     def get_external_coordinates(self, intersection):
         contours = cv2.findContours(intersection, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
